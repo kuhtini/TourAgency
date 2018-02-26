@@ -11,5 +11,11 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
 
     List<Tour> findByByDateAndFromDate(Date byDate, Date fromDate);
 
+    List<Tour> findByByDate(Date fromDate);
+
+    List<Tour> findByFromDate(Date fromDate);
+
     List<Tour> findByStatus(Tour.TourStatus status);
+
+
 }
