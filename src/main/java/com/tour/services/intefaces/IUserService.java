@@ -1,9 +1,9 @@
 package com.tour.services.intefaces;
 
-import com.tour.enums.UserRole;
+import com.tour.model.enums.UserRole;
 import java.util.List;
 
-public interface UserService<T>{
+public interface IUserService<T>{
 
     void addNewUser(T user);
 

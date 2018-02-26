@@ -1,4 +1,4 @@
-package com.tour.enums;
+package com.tour.model.enums;
 
 public enum UserRole {
     ROLE_USER,

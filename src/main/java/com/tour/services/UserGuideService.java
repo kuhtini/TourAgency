@@ -1,16 +1,18 @@
 package com.tour.services;
 
-import com.tour.enums.UserRole;
+import com.tour.model.enums.UserRole;
 import com.tour.model.Guide;
 import com.tour.repository.GuideRepository;
-import com.tour.services.intefaces.UserService;
+import com.tour.services.intefaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class UserGuideService implements UserService<Guide> {
+@Transactional
+public class UserGuideService implements IUserService<Guide> {
 
 
     private GuideRepository guideRepository;

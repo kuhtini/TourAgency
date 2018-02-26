@@ -1,7 +1,6 @@
 package com.tour.repository;
 
-import com.tour.enums.UserRole;
-import com.tour.model.Guide;
+import com.tour.model.enums.UserRole;
 
 import java.util.List;
 
