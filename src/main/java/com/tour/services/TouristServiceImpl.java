@@ -3,7 +3,7 @@ package com.tour.services;
 import com.tour.model.enums.UserRole;
 import com.tour.model.Tourist;
 import com.tour.repository.TouristRepository;
-import com.tour.services.intefaces.IUserService;
+import com.tour.services.intefaces.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,24 +12,25 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserTouristService implements IUserService<Tourist> {
+public class TouristServiceImpl implements TouristService {
 
 
     private TouristRepository touristRepository;
 
     @Autowired
-    public UserTouristService(TouristRepository touristRepository) {
+    public TouristServiceImpl(TouristRepository touristRepository) {
         this.touristRepository = touristRepository;
 
     }
 
-    public void addNewUser(Tourist user) {
+    public void addUser(Tourist user) {
         touristRepository.save(user);
     }
 
     public void deleteUser(Tourist user) {
         touristRepository.delete(user);
     }
+
     public List<Tourist> getAllUsers() {
         return touristRepository.findAll();
     }
@@ -47,18 +48,26 @@ public class UserTouristService implements IUserService<Tourist> {
     }
 
     public List<Tourist> getUserLikeByEmail(String email) {
-        return touristRepository.findByEmailLike(email);
+        return touristRepository.findByEmailLike("%" + email + "%");
     }
 
     public List<Tourist> getUserLikeByUserName(String userName) {
-        return touristRepository.findByUserNameLike(userName);
+        return touristRepository.findByUserNameLike("%" + userName + "%");
     }
 
-    public Tourist getUserById(long id) {
+    public Tourist getUserById(Long id) {
         return touristRepository.findOne(id);
     }
 
     public List<Tourist> getUsersByLastName(String lastName) {
         return touristRepository.findByLastName(lastName);
+    }
+
+    public void deleteUser(Long id) {
+        touristRepository.delete(id);
+    }
+
+    public void deleteAll() {
+        touristRepository.deleteAll();
     }
 }

@@ -1,9 +1,8 @@
 package com.tour.services;
 
-import com.tour.model.enums.UserRole;
 import com.tour.model.Guide;
 import com.tour.repository.GuideRepository;
-import com.tour.services.intefaces.IUserService;
+import com.tour.services.intefaces.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,20 +11,19 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserGuideService implements IUserService<Guide> {
+public class GuideServiceImpl implements GuideService {
 
 
     private GuideRepository guideRepository;
 
-
     @Autowired
-    public UserGuideService(GuideRepository guideRepository) {
+    public GuideServiceImpl(GuideRepository guideRepository) {
         this.guideRepository = guideRepository;
     }
 
-    public void addNewUser(Guide user) {
-
+    public void addUser(Guide user) {
         guideRepository.save(user);
+
     }
 
     public void deleteUser(Guide user) {
@@ -45,23 +43,27 @@ public class UserGuideService implements IUserService<Guide> {
         return guideRepository.findAll();
     }
 
-    public List<Guide> getAllUsersByUserRole(UserRole userRole) {
-        return guideRepository.findByRoles(userRole);
-    }
-
     public List<Guide> getUserLikeByEmail(String email) {
-        return guideRepository.findByEmailLike(email);
+        return guideRepository.findByEmailLike("%" + email + "%");
     }
 
     public List<Guide> getUserLikeByUserName(String userName) {
-        return guideRepository.findByUserNameLike(userName);
+        return guideRepository.findByUserNameLike("%" + userName + "%");
     }
 
-    public Guide getUserById(long id) {
+    public Guide getUserById(Long id) {
         return guideRepository.findOne(id);
     }
 
     public List<Guide> getUsersByLastName(String lastName) {
         return guideRepository.findByLastName(lastName);
+    }
+
+    public void deleteUser(Long id) {
+        guideRepository.delete(id);
+    }
+
+    public void deleteAll() {
+        guideRepository.deleteAll();
     }
 }

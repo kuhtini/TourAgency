@@ -9,4 +9,5 @@ import java.util.List;
 public interface GuideRepository extends JpaRepository<Guide, Long>, BaseUserMethods<Guide> {
 
     List<Guide> findByGroups(Group group);
+
 }

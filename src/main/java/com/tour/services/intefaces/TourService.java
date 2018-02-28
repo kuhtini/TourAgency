@@ -4,8 +4,7 @@ import com.tour.model.Tour;
 
 import java.util.Date;
 import java.util.List;
-
-public interface ITourService {
+public interface TourService {
 
 
     void addTour(Tour tour);

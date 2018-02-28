@@ -2,7 +2,7 @@ package com.tour.services;
 
 import com.tour.model.Tour;
 import com.tour.repository.TourRepository;
-import com.tour.services.intefaces.ITourService;
+import com.tour.services.intefaces.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TourService implements ITourService {
+public class TourServiceImpl implements TourService {
 
 
     private TourRepository tourRepository;
 
     @Autowired
-    public TourService(TourRepository tourRepository) {
+    public TourServiceImpl(TourRepository tourRepository) {
         this.tourRepository = tourRepository;
     }
 

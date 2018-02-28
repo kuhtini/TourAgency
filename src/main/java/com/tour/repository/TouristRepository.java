@@ -12,4 +12,5 @@ public interface TouristRepository extends JpaRepository<Tourist, Long>, BaseUse
     List<Tourist> findByGroups(Group group);
 
 
+
 }

@@ -7,7 +7,7 @@ import com.tour.model.Tourist;
 
 import java.util.List;
 
-public interface IGroupService {
+public interface GroupService {
 
     void addGroup(Group group);
 

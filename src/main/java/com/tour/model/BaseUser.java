@@ -6,6 +6,7 @@ import com.tour.model.interfaces.IUser;
 import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 
@@ -23,6 +24,7 @@ public class BaseUser implements IUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
 
     @Column(name = "user_name", unique = true)
     private String userName;
@@ -66,8 +68,8 @@ public class BaseUser implements IUser {
     public BaseUser() {
     }
 
-
-    public long getId() {
+    //GetSet
+    public long getId () {
         return id;
     }
 
@@ -140,6 +142,11 @@ public class BaseUser implements IUser {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+    //EndGetSet
+
+
 
     public String toString() {
         return new ToStringCreator(this)

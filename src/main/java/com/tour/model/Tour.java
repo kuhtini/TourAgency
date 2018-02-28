@@ -3,6 +3,8 @@ package com.tour.model;
 import com.tour.model.interfaces.ITour;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,9 @@ public class Tour implements ITour {
 
     @ElementCollection
     private List<String> cities;
+
+    @Column(name = "price")
+    private int price;
 
 
     public TourStatus getTourStatus() {

@@ -15,9 +15,8 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @EnableJpaRepositories("com.tour.repository")
 @EntityScan("com.tour.model")
-@PropertySource("dataSource.properties")
+@PropertySource({"dataSource.properties","application.properties"})
 @Import(RepositoryRestMvcConfiguration.class)
-@PropertySource("application.properties")
 public class TourAgencyApplication {
 
 

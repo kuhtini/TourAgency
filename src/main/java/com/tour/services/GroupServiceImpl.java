@@ -5,7 +5,7 @@ import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.Tourist;
 import com.tour.repository.GroupRepository;
-import com.tour.services.intefaces.IGroupService;
+import com.tour.services.intefaces.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +14,13 @@ import java.util.List;
 
 @Service
 @Transactional
-public class GroupService implements IGroupService {
+public class GroupServiceImpl implements GroupService {
 
 
    private GroupRepository groupRepository;
 
    @Autowired
-    public GroupService(GroupRepository groupRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
     }
 
