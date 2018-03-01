@@ -21,4 +21,10 @@ public interface TourService {
 
     List<Tour> getToursByStatus(Tour.TourStatus status);
 
+    List<Tour> getAllTours();
+
+    Tour getTourById(long id);
+
+
+
 }

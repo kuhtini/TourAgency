@@ -49,4 +49,12 @@ public class TourServiceImpl implements TourService {
     public List<Tour> getToursByStatus(Tour.TourStatus status) {
         return tourRepository.findByStatus(status);
     }
+
+    public List<Tour> getAllTours() {
+        return tourRepository.findAll();
+    }
+
+    public Tour getTourById(long id) {
+        return tourRepository.findOne(id);
+    }
 }
