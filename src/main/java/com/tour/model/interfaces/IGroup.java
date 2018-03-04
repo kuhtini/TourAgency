@@ -13,5 +13,6 @@ public interface IGroup extends IdContain {
 
     Set<Tourist> getTourists();
 
+    void addTourist(Tourist tourist);
 
 }

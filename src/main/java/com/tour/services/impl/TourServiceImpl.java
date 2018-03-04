@@ -1,12 +1,15 @@
-package com.tour.services;
+package com.tour.services.impl;
 
+import com.tour.model.Group;
 import com.tour.model.Tour;
 import com.tour.repository.TourRepository;
-import com.tour.services.intefaces.TourService;
+import com.tour.services.GroupService;
+import com.tour.services.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,14 +19,28 @@ public class TourServiceImpl implements TourService {
 
 
     private TourRepository tourRepository;
+    private GroupService groupService;
 
     @Autowired
-    public TourServiceImpl(TourRepository tourRepository) {
+    public TourServiceImpl(TourRepository tourRepository, GroupService groupService) {
         this.tourRepository = tourRepository;
+        this.groupService = groupService;
     }
 
-    public void addTour(Tour tour) {
+    public void saveTour(Tour tour) {
         tourRepository.save(tour);
+    }
+
+    public void addNewTour(Tour tour) {
+
+            Group group = new Group();
+            group.setTour(tour);
+            tourRepository.save(tour);
+            groupService.addGroup(group);
+
+        //TODO ExceptionIfExist
+
+
     }
 
     public void deleteTour(Tour tour) {
@@ -56,5 +73,9 @@ public class TourServiceImpl implements TourService {
 
     public Tour getTourById(long id) {
         return tourRepository.findOne(id);
+    }
+
+    public void joinInToGroup(Group group){
+
     }
 }

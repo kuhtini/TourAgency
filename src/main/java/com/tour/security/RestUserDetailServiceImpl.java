@@ -1,5 +1,6 @@
-package com.tour.services.security;
+package com.tour.security;
 
+import com.tour.model.BaseUser;
 import com.tour.model.Role;
 import com.tour.model.interfaces.IUser;
 import com.tour.repository.GuideRepository;
@@ -17,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class RestUserDetailServiceImpl implements UserDetailsService {
 
 
     private TouristRepository touristRepository;
@@ -25,7 +26,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private GuideRepository guideRepository;
 
     @Autowired
-    public UserDetailServiceImpl(TouristRepository touristRepository, GuideRepository guideRepository) {
+    public RestUserDetailServiceImpl(TouristRepository touristRepository, GuideRepository guideRepository) {
         this.touristRepository = touristRepository;
         this.guideRepository = guideRepository;
     }
@@ -42,8 +43,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        for (BaseUser.Role role : user.getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.name()));
         }
 
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);

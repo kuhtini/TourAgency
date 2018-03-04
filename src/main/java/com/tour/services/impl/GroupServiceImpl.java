@@ -1,12 +1,13 @@
-package com.tour.services;
+package com.tour.services.impl;
 
 import com.tour.model.Group;
 import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.Tourist;
 import com.tour.repository.GroupRepository;
-import com.tour.services.intefaces.GroupService;
+import com.tour.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,6 +24,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupServiceImpl(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
     }
+
 
     public void addGroup(Group group) {
          groupRepository.save(group);
@@ -50,5 +52,9 @@ public class GroupServiceImpl implements GroupService {
 
     public List<Group> getGroupsByTour(Tour tour) {
         return groupRepository.findByTour(tour);
+    }
+
+    public List<Group> getAllGroups() {
+        return groupRepository.findAll();
     }
 }

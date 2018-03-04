@@ -1,19 +1,20 @@
 package com.tour.services.intefaces;
 
+import com.tour.config.H2Config;
 import com.tour.model.Guide;
-import com.tour.model.Tourist;
-import org.junit.After;
+import com.tour.services.GuideAccountService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.devtools.restart.ConditionalOnInitializedRestarter;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -26,44 +27,41 @@ import static org.junit.Assert.*;
 @DataJpaTest
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ComponentScan("com.tour.services")
-public class GuideServiceTest {
+public class GuideAccountServiceTest {
 
     @Autowired
-    private GuideService guideService;
+    private GuideAccountService guideAccountService;
 
-    private Guide guide, guide1, guide2;
+    private Guide guide = new Guide(), guide1 = new Guide(), guide2 = new Guide();
 
 
     @Before
    // @Rollback(value = false)
     public void initialEntities() {
-        guide = new Guide();
         guide.setFirstName("Park");
         guide.setLastName("Ambham");
         guide.setUserName("Park991");
         guide.setEmail("lordoftherings2000@mail.com");
 
 
-        guide1 = new Guide();
         guide1.setFirstName("Roman");
         guide1.setLastName("Wilals");
         guide1.setUserName("ARHANGEL991");
         guide1.setEmail("lordofthemachinesT800@mail.com");
 
-        guide2 = new Guide();
         guide2.setFirstName("Peter");
         guide2.setLastName("Jackson");
         guide2.setUserName("JacksonOn");
         guide2.setEmail("waaagrrOrks@mail.com");
 
-        guideService.addUser(guide);
-        guideService.addUser(guide1);
-        guideService.addUser(guide2);
+        guideAccountService.saveUser(guide);
+        guideAccountService.saveUser(guide1);
+        guideAccountService.saveUser(guide2);
     }
 //
 //    @After
 //    public void clearDB() {
-//        guideService.deleteAll();
+//        guideAccountService.deleteAll();
 //    }
 
 
@@ -71,28 +69,28 @@ public class GuideServiceTest {
     public void addUser() throws Exception {
 
 
-        assertEquals(guideService.getUserById(guide.getId()), guide);
+        assertEquals(guideAccountService.getUserById(guide.getId()), guide);
     }
 
     @Test
     public void deleteUserById() throws Exception {
 
-        guideService.deleteUser(guide);
-        assertNull(guideService.getUserById(guide.getId()));
+        guideAccountService.deleteUser(guide);
+        assertNull(guideAccountService.getUserById(guide.getId()));
     }
 
     @Test
     public void getAllUsersWhenEmpty() throws Exception {
 
-        guideService.deleteAll();
-        assertEquals(guideService.getAllUsers(), new ArrayList<Guide>());
+        guideAccountService.deleteAll();
+        assertEquals(guideAccountService.getAllUsers(), new ArrayList<Guide>());
     }
 
 
     @Test(expected = EmptyResultDataAccessException.class)
     public void deleteWhenNotExist() {
 
-        guideService.deleteUser((long) 2);
+        guideAccountService.deleteUser((long) 2);
 
     }
 
@@ -101,18 +99,18 @@ public class GuideServiceTest {
     public void getUserByUserName() throws Exception {
 
 
-        //guideService.addUser(guide);
+        //guideAccountService.saveUser(guide);
 
-        assertEquals(guide, guideService.getUserByUserName(guide.getUserName()));
+        assertEquals(guide, guideAccountService.getUserByUserName(guide.getUserName()));
     }
 
     @Test
     public void getUserByEmail() throws Exception {
 
 
-        //guideService.addUser(guide);
+        //guideAccountService.saveUser(guide);
 
-        assertEquals(guide, guideService.getUserByEmail(guide.getEmail()));
+        assertEquals(guide, guideAccountService.getUserByEmail(guide.getEmail()));
 
 
     }
@@ -121,7 +119,7 @@ public class GuideServiceTest {
     public void getUserLikeByEmail() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1)), guideService.getUserLikeByEmail("lord"));
+        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1)), guideAccountService.getUserLikeByEmail("lord"));
 
     }
 
@@ -129,7 +127,7 @@ public class GuideServiceTest {
     public void getUserLikeByUserName() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1)), guideService.getUserLikeByUserName("991"));
+        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1)), guideAccountService.getUserLikeByUserName("991"));
 
     }
 
@@ -137,13 +135,13 @@ public class GuideServiceTest {
     public void getUserById() throws Exception {
 
 
-        assertEquals(guide, guideService.getUserById(guide.getId()));
+        assertEquals(guide, guideAccountService.getUserById(guide.getId()));
 
     }
 
     @Test
     public void getUsersByLastName() throws Exception {
 
-        assertEquals(guideService.getUsersByLastName(guide.getLastName()), Arrays.asList(guide));
+        assertEquals(guideAccountService.getUsersByLastName(guide.getLastName()), Arrays.asList(guide));
     }
 }

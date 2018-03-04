@@ -5,6 +5,7 @@ import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.Tourist;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 

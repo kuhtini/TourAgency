@@ -2,6 +2,7 @@ package com.tour.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tour.model.enums.UserRole;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,8 +14,8 @@ import java.util.Set;
  * @version 1.0
  */
 
-@Entity
-@Table(name = "roles")
+//@Entity
+//@Table(name = "roles")
 public class Role {
 
     @Id
@@ -22,16 +23,17 @@ public class Role {
     private Long id;
 
     @Column(name = "name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private UserRole name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<BaseUser> baseUsers;
 
     public Role() {
     }
 
-    public Role(String name) {
+    public Role(UserRole name) {
         this.name = name;
     }
 
@@ -43,11 +45,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
+    public UserRole getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(UserRole name) {
         this.name = name;
     }
 
@@ -63,7 +65,7 @@ public class Role {
     public String toString() {
         return "IRole{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + name.toString() + '\'' +
                 ", baseUsers=" + baseUsers +
                 '}';
     }

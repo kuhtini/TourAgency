@@ -1,10 +1,13 @@
-package com.tour.services;
+package com.tour.services.impl;
 
+import com.tour.model.Group;
 import com.tour.model.enums.UserRole;
 import com.tour.model.Tourist;
 import com.tour.repository.TouristRepository;
-import com.tour.services.intefaces.TouristService;
+import com.tour.services.GroupService;
+import com.tour.services.TouristAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,18 +15,27 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TouristServiceImpl implements TouristService {
+public class TouristAccountServiceImpl implements TouristAccountService {
 
 
     private TouristRepository touristRepository;
+    private GroupService groupService;
+    private PasswordEncoder encoder;
 
     @Autowired
-    public TouristServiceImpl(TouristRepository touristRepository) {
+    public TouristAccountServiceImpl(TouristRepository touristRepository, GroupService groupService, PasswordEncoder encoder) {
         this.touristRepository = touristRepository;
-
+        this.groupService = groupService;
+        this.encoder = encoder;
     }
 
-    public void addUser(Tourist user) {
+
+    public void saveUser(Tourist user) {
+        touristRepository.save(user);
+    }
+
+    public void addNewUser(Tourist user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         touristRepository.save(user);
     }
 
@@ -69,5 +81,21 @@ public class TouristServiceImpl implements TouristService {
 
     public void deleteAll() {
         touristRepository.deleteAll();
+    }
+
+
+    public void joinInGroup(long guideId, long groupId) {
+
+        Group group = groupService.getGroupById(groupId);
+        Tourist tourist = touristRepository.findOne(guideId);
+        if (tourist.getGroups().contains(group)) {
+
+            //throw
+        } else {
+            tourist.addGroup(group);
+            group.addTourist(tourist);
+            groupService.addGroup(group);
+
+        }
     }
 }

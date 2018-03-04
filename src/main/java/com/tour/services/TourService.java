@@ -1,4 +1,4 @@
-package com.tour.services.intefaces;
+package com.tour.services;
 
 import com.tour.model.Tour;
 
@@ -7,7 +7,9 @@ import java.util.List;
 public interface TourService {
 
 
-    void addTour(Tour tour);
+    void saveTour(Tour tour);
+
+    void addNewTour(Tour tour);
 
     void deleteTour(Tour tour);
 

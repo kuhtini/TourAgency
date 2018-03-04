@@ -3,10 +3,13 @@ package com.tour.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tour.model.interfaces.IUser;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 
@@ -21,14 +24,24 @@ public class BaseUser implements IUser {
         GUIDE
     }
 
+    public enum Role{
+        ROLE_USER,
+        ROLE_STAFF,
+        ROLE_ADMIN
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
+    @Size(max = 50)
+    @NotEmpty
+   // @Pattern(regexp="^[\\pL '-]+$")
     @Column(name = "user_name", unique = true)
     private String userName;
 
+    //@Size(min = 6, max = 50)
+    //@Pattern(regexp="^[a-zA-Z0-9]+$")
     @Column(name = "password")
     private String password;
 
@@ -41,6 +54,12 @@ public class BaseUser implements IUser {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    @Column(name = "phone")
+    private String phone;
+
+
+
+
     @Column(unique = true)
     private String email;
 
@@ -48,13 +67,10 @@ public class BaseUser implements IUser {
     private String confirmPassword;
 
     @JsonManagedReference
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Set<Role> roles;
+    @ElementCollection
+    private Set<BaseUser.Role> roles;
 
-    public BaseUser(String userName, String password, String firstName, String lastName, boolean active, String email, String confirmPassword, Set<Role> roles) {
+    public BaseUser(String userName, String password, String firstName, String lastName, boolean active, String email, String confirmPassword, Set<BaseUser.Role> roles) {
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
@@ -117,7 +133,7 @@ public class BaseUser implements IUser {
         this.confirmPassword = confirmPassword;
     }
 
-    public Set<Role> getRoles() {
+    public Set<BaseUser.Role> getRoles() {
         return roles;
     }
 
@@ -143,6 +159,13 @@ public class BaseUser implements IUser {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     //EndGetSet
 

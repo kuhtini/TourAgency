@@ -1,4 +1,4 @@
-package com.tour.services.intefaces;
+package com.tour.services;
 
 import com.tour.model.Group;
 import com.tour.model.Guide;
@@ -22,6 +22,11 @@ public interface GroupService {
     List<Group> getGroupsByTourist(Tourist tourist);
 
     List<Group> getGroupsByTour(Tour tour);
+
+    List<Group> getAllGroups ();
+
+
+
 
 
 }

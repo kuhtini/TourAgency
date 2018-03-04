@@ -1,5 +1,6 @@
 package com.tour.model.interfaces;
 
+import com.tour.model.Group;
 import com.tour.model.Tour;
 
 import java.util.Date;
@@ -21,5 +22,10 @@ public interface ITour extends IdContain {
 
     List<String> getCities();
 
+    int getPrice();
+
+    String getDescription();
+
+    List<Group> getGroups();
 
 }

@@ -13,6 +13,8 @@ import java.util.List;
 public class Tour implements ITour {
 
 
+
+
     public enum TourStatus {
         CANCELED,
         DELAYED,
@@ -48,6 +50,12 @@ public class Tour implements ITour {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "description")
+    private String description;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+    private List<Group> groups;
+
 
     public TourStatus getTourStatus() {
         return status;
@@ -79,5 +87,70 @@ public class Tour implements ITour {
 
     public List<String> getCities() {
         return cities;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public void setByDate(Date byDate) {
+        this.byDate = byDate;
+    }
+
+    public void setStatus(TourStatus status) {
+        this.status = status;
+    }
+
+    public void setStartCity(String startCity) {
+        this.startCity = startCity;
+    }
+
+    public void setCities(List<String> cities) {
+        this.cities = cities;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public Tour(String name, Date fromDate, Date byDate, TourStatus status, String startCity, List<String> cities, int price) {
+        this.name = name;
+        this.fromDate = fromDate;
+        this.byDate = byDate;
+        this.status = status;
+        this.startCity = startCity;
+        this.cities = cities;
+        this.price = price;
+    }
+
+    public Tour() {
     }
 }

@@ -12,11 +12,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
+@SpringBootApplication
 @EnableJpaRepositories("com.tour.repository")
 @EntityScan("com.tour.model")
 @PropertySource({"dataSource.properties","application.properties"})
-@Import(RepositoryRestMvcConfiguration.class)
+//@Import(RepositoryRestMvcConfiguration.class)
 public class TourAgencyApplication {
 
 

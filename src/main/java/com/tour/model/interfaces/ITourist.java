@@ -9,4 +9,5 @@ public interface ITourist extends IUser {
 
     Set<Group> getGroups();
 
+    void addGroup(Group group);
 }

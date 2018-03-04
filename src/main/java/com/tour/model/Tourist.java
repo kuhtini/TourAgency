@@ -4,6 +4,7 @@ import com.tour.model.interfaces.ITourist;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -30,8 +31,15 @@ public class Tourist extends BaseUser implements ITourist {
     }
 
     public Set<Group> getGroups() {
-
         return groups;
+    }
+
+    public void addGroup(Group group){
+        if (groups == null){
+            groups = new HashSet<>();
+
+        }
+        groups.add(group);
     }
 
     public void setGroups(Set<Group> groups) {

@@ -5,6 +5,7 @@ import com.tour.model.interfaces.IGuide;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,21 @@ public class Guide extends BaseUser implements IGuide {
 
     public void setEndVisaDate(Date endVisaDate) {
         this.endVisaDate = endVisaDate;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+    }
+
+    public void addGroup(Group group){
+        if (groups == null){
+            groups = new HashSet<>();
+        }
+        groups.add(group);
     }
 
     public Guide() {

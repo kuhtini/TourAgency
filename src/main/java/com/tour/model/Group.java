@@ -5,6 +5,7 @@ import com.tour.model.interfaces.IGuide;
 import com.tour.model.interfaces.ITour;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -72,5 +73,21 @@ public class Group implements IGroup {
 
     public void setTourists(Set<Tourist> tourists) {
         this.tourists = tourists;
+    }
+
+    public void addTourist(Tourist tourist){
+        if (tourists == null){
+            tourists = new HashSet<>();
+        }
+        tourists.add(tourist);
+    }
+
+    public Group(Guide guide, Tour tour, Set<Tourist> tourists) {
+        this.guide = guide;
+        this.tour = tour;
+        this.tourists = tourists;
+    }
+
+    public Group() {
     }
 }
