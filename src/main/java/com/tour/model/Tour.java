@@ -1,10 +1,10 @@
 package com.tour.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tour.model.interfaces.ITour;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,11 +30,15 @@ public class Tour implements ITour {
     private String name;
 
     @Column(name = "from_date")
-    @Temporal(TemporalType.DATE)
+   // @Temporal(TemporalType.DATE)
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date fromDate;
 
     @Column(name = "by_date")
-    @Temporal(TemporalType.DATE)
+   // @Temporal(TemporalType.DATE)
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date byDate;
 
     @Column(name = "status")
@@ -53,13 +57,11 @@ public class Tour implements ITour {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
-    private List<Group> groups;
+    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL, mappedBy = "tour")
+    private List<Group> groups = new ArrayList<Group>() {
+    };
 
 
-    public TourStatus getTourStatus() {
-        return status;
-    }
 
     public long getId() {
         return id;
@@ -134,6 +136,7 @@ public class Tour implements ITour {
     }
 
     public List<Group> getGroups() {
+
         return groups;
     }
 
@@ -152,5 +155,27 @@ public class Tour implements ITour {
     }
 
     public Tour() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tour tour = (Tour) o;
+
+        if (!name.equals(tour.name)) return false;
+        if (!fromDate.equals(tour.fromDate)) return false;
+        if (byDate != null ? !byDate.equals(tour.byDate) : tour.byDate != null) return false;
+        return status == tour.status;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + fromDate.hashCode();
+        result = 31 * result + (byDate != null ? byDate.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        return result;
     }
 }

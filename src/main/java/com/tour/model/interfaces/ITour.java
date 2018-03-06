@@ -18,8 +18,6 @@ public interface ITour extends IdContain {
 
     String getStartCity();
 
-    Tour.TourStatus getTourStatus();
-
     List<String> getCities();
 
     int getPrice();

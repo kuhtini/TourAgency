@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,11 +70,12 @@ public class TourServiceImpl implements TourService {
         return tourRepository.findAll();
     }
 
+    public void deleteAll() {
+        tourRepository.deleteAll();
+    }
+
     public Tour getTourById(long id) {
         return tourRepository.findOne(id);
     }
 
-    public void joinInToGroup(Group group){
-
-    }
 }

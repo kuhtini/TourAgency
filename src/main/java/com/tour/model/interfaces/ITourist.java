@@ -6,8 +6,8 @@ import java.util.Set;
 
 public interface ITourist extends IUser {
 
+    void joinInToGroup(Group group);
 
-    Set<Group> getGroups();
 
-    void addGroup(Group group);
+    void leaveGroup(Group group);
 }

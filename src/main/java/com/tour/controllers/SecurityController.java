@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
-//@RepositoryRestController
+@RepositoryRestController
 public class SecurityController {
 
     private TouristAccountService touristAccountService;
@@ -33,15 +33,17 @@ public class SecurityController {
 
 
 
-    @RequestMapping(value = "/api/tourist", method = RequestMethod.GET)
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/tourists", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseBody
     public PersistentEntityResource currentUserNameTourist(HttpServletRequest request, PersistentEntityResourceAssembler assembler) {
         Principal principal = request.getUserPrincipal();
         return assembler.toFullResource( touristAccountService.getUserByUserName(principal.getName()));
     }
 
-    @RequestMapping(value = "/api/guide", method = RequestMethod.GET)
-    //@PreAuthorize("hasRole('ROLE_STAFF')")
+    @RequestMapping(value = "/guides", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_STAFF')")
+    @ResponseBody
     public PersistentEntityResource currentUserNameGuide(HttpServletRequest request,PersistentEntityResourceAssembler assembler) {
         Principal principal = request.getUserPrincipal();
         return  assembler.toFullResource(guideAccountService.getUserByUserName(principal.getName()));

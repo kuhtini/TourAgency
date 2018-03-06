@@ -35,8 +35,8 @@ public class Group implements IGroup {
                     referencedColumnName = "id"
             )
     )
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Tourist> tourists;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Tourist> tourists = new HashSet<>();
 
 
     @Override
@@ -90,4 +90,6 @@ public class Group implements IGroup {
 
     public Group() {
     }
+
+
 }

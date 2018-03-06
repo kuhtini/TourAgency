@@ -67,7 +67,7 @@ public class BaseUser implements IUser {
     private String confirmPassword;
 
     @JsonManagedReference
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<BaseUser.Role> roles;
 
     public BaseUser(String userName, String password, String firstName, String lastName, boolean active, String email, String confirmPassword, Set<BaseUser.Role> roles) {
@@ -179,5 +179,31 @@ public class BaseUser implements IUser {
                 .append("user_name", this.getUserName())
                 .append("email", this.getEmail()).toString();
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BaseUser baseUser = (BaseUser) o;
+
+        if (id != baseUser.id) return false;
+        if (!userName.equals(baseUser.userName)) return false;
+        if (!password.equals(baseUser.password)) return false;
+        if (firstName != null ? !firstName.equals(baseUser.firstName) : baseUser.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(baseUser.lastName) : baseUser.lastName != null) return false;
+        if (phone != null ? !phone.equals(baseUser.phone) : baseUser.phone != null) return false;
+        return email.equals(baseUser.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + userName.hashCode();
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + email.hashCode();
+        return result;
     }
 }

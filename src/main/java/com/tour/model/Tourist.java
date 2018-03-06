@@ -19,7 +19,7 @@ public class Tourist extends BaseUser implements ITourist {
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
 
-    private Set<Group> groups;
+    private Set<Group> groups =  new HashSet<>();
 
     public Tourist(String userName, String password, String firstName, String lastName, boolean active, String email, String confirmPassword, Set<Role> roles, Set<Group> groups) {
         super(userName, password, firstName, lastName, active, email, confirmPassword, roles);
@@ -34,13 +34,22 @@ public class Tourist extends BaseUser implements ITourist {
         return groups;
     }
 
-    public void addGroup(Group group){
+    public void joinInToGroup(Group group){
         if (groups == null){
             groups = new HashSet<>();
 
         }
         groups.add(group);
     }
+
+    public void leaveGroup(Group group){
+        if (groups == null){
+           throw new EntityExistsException("Еntity is not in the ");
+        }
+        groups.remove(group);
+
+    }
+
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;

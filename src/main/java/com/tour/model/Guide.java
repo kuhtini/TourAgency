@@ -19,7 +19,7 @@ public class Guide extends BaseUser implements IGuide {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL)
-    private Set<Group> groups;
+    private Set<Group> groups = new HashSet<>();
 
 
     public Date getEndVisaDate() {
@@ -38,7 +38,15 @@ public class Guide extends BaseUser implements IGuide {
         this.groups = groups;
     }
 
-    public void addGroup(Group group){
+    public void leaveGroup(Group group){
+        if (groups == null){
+            throw new EntityExistsException("Еntity is not in  group");
+        }
+        groups.remove(group);
+
+    }
+
+    public void joinInToGroup(Group group){
         if (groups == null){
             groups = new HashSet<>();
         }
@@ -54,6 +62,7 @@ public class Guide extends BaseUser implements IGuide {
         this.endVisaDate = endVisaDate;
         this.groups = groups;
     }
+
 
 }
 

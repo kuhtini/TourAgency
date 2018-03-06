@@ -5,13 +5,16 @@ import com.tour.model.enums.UserRole;
 import com.tour.model.Tourist;
 import com.tour.repository.TouristRepository;
 import com.tour.services.GroupService;
+import com.tour.services.TourService;
 import com.tour.services.TouristAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -20,15 +23,16 @@ public class TouristAccountServiceImpl implements TouristAccountService {
 
     private TouristRepository touristRepository;
     private GroupService groupService;
+    private TourService tourService;
     private PasswordEncoder encoder;
 
     @Autowired
-    public TouristAccountServiceImpl(TouristRepository touristRepository, GroupService groupService, PasswordEncoder encoder) {
+    public TouristAccountServiceImpl(TouristRepository touristRepository, GroupService groupService, TourService tourService, PasswordEncoder encoder) {
         this.touristRepository = touristRepository;
         this.groupService = groupService;
+        this.tourService = tourService;
         this.encoder = encoder;
     }
-
 
     public void saveUser(Tourist user) {
         touristRepository.save(user);
@@ -84,18 +88,28 @@ public class TouristAccountServiceImpl implements TouristAccountService {
     }
 
 
-    public void joinInGroup(long guideId, long groupId) {
+    public void joinInGroup(long touristId, long groupId) {
 
         Group group = groupService.getGroupById(groupId);
-        Tourist tourist = touristRepository.findOne(guideId);
+        Tourist tourist = touristRepository.findOne(touristId);
         if (tourist.getGroups().contains(group)) {
 
             //throw
         } else {
-            tourist.addGroup(group);
+            tourist.joinInToGroup(group);
             group.addTourist(tourist);
             groupService.addGroup(group);
 
         }
+    }
+
+    public boolean inGroup(long touristID, long tourId){
+
+        List<Group> tourGroup = tourService.getTourById(tourId).getGroups();
+
+        Set<Group> guideGroups = touristRepository.findOne(touristID).getGroups();
+
+        return !Collections.disjoint(tourGroup,guideGroups);
+
     }
 }

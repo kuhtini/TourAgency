@@ -9,7 +9,8 @@ public interface IGuide extends IUser, IdContain {
 
     Date getEndVisaDate();
 
-    Set<Group> getGroups();
+    void joinInToGroup(Group group);
 
-    void addGroup(Group group);
+
+    void leaveGroup(Group group);
 }

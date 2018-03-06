@@ -8,17 +8,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
+import static com.tour.utils.Creator.nextTour;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@ComponentScan("com.tour.services")
+@SpringBootTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 public class TourServiceTest {
 
     @Autowired
@@ -29,29 +35,27 @@ public class TourServiceTest {
 
     @Before
     public void init() {
-        tour.setName("tur");
-        tour.setByDate (DateUtil.now());
-        tour.setFromDate(DateUtil.yesterday());
 
+        tour = nextTour();
+        tourService.saveTour(tour);
 
     }
 
     @Test
     public void addTour() throws Exception {
-        tourService.saveTour(tour);
+
         assertEquals(tour,tourService.getTourById(tour.getId()));
     }
 
     @Test
     public void getAllTours() throws Exception {
-        tourService.saveTour(tour);
+
         assertEquals(Arrays.asList(tour),tourService.getAllTours());
     }
 
     @Test
     public void deleteAll() throws Exception {
-        tourService.saveTour(tour);
-        tourService.deleteTour(tour);
+        tourService.deleteAll();
         assertEquals(new ArrayList<Tour>(),tourService.getAllTours());
     }
 

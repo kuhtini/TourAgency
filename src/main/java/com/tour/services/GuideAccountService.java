@@ -6,4 +6,6 @@ import com.tour.services.intefaces.IUserService;
 public interface GuideAccountService extends IUserService<Guide,Long> {
 
     void joinInGroup(long guideId,long groupId);
+
+
 }

@@ -37,4 +37,5 @@ public interface IUserService<T, ID extends Serializable>{
 
     List<T> getAllUsersByUserRole(UserRole userRole);
 
+    boolean inGroup(long guideID, long tourId);
 }

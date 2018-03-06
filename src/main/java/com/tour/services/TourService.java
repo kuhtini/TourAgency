@@ -27,6 +27,8 @@ public interface TourService {
 
     Tour getTourById(long id);
 
+    void deleteAll();
+
 
 
 }

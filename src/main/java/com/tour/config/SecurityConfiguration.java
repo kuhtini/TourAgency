@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/api/tours/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PUT, "/api/tours/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PATCH, "/api/tours/**").hasRole("STAFF")
-                  .antMatchers(HttpMethod.DELETE, "/api/tours/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.DELETE, "/api/tours/**").hasRole("STAFF")
 //
 //                .antMatchers(HttpMethod.POST, "/api/groups/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PUT, "/api/groups/**").hasRole("STAFF")
@@ -62,12 +62,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/api/tourists/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PUT, "/api/tourists/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PATCH, "/api/tourists/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.DELETE, "/api/tourists/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.DELETE, "/api/tourists/**").hasRole("STAFF")
 //
 //                .antMatchers(HttpMethod.POST, "/api/guides/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PUT, "/api/guides/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PATCH, "/api/guides/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.DELETE, "/api/guides/**").hasRole("STAFF")
+               .antMatchers(HttpMethod.DELETE, "/api/guides/**").hasRole("STAFF")
                 .and()
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin();

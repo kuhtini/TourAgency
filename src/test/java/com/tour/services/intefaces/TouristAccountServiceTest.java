@@ -2,25 +2,30 @@ package com.tour.services.intefaces;
 
 import com.tour.model.Tourist;
 import com.tour.services.TouristAccountService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.tour.utils.Creator.nextTourist;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-//@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@ComponentScan("com.tour.services")
+@SpringBootTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 public class TouristAccountServiceTest {
 
     @Autowired
@@ -35,27 +40,19 @@ public class TouristAccountServiceTest {
     @Before
     public void setUp() throws Exception {
 
-        tourist.setFirstName("Park");
-        tourist.setLastName("Ambham");
-        tourist.setUserName("PARKisONair991");
-        tourist.setEmail("lordoftherings2000@mail.com");
+        tourist = nextTourist();
 
+        tourist1 = nextTourist();
 
-        tourist1.setFirstName("Roman");
-        tourist1.setLastName("Wilals");
-        tourist1.setUserName("ARHANGEL991");
-        tourist1.setEmail("lordofthemachinesT800@mail.com");
-
-        tourist2.setFirstName("Peter");
-        tourist2.setLastName("Jackson");
-        tourist2.setUserName("JacksonOn");
-        tourist2.setEmail("waaagrrOrks@mail.com");
+        tourist2 = nextTourist();
 
         touristAccountService.saveUser(tourist);
         touristAccountService.saveUser(tourist1);
         touristAccountService.saveUser(tourist2);
 
     }
+
+
 
     @Test
     public void addUser() throws Exception {
@@ -81,6 +78,7 @@ public class TouristAccountServiceTest {
     @Test(expected = EmptyResultDataAccessException.class )
     public void deleteWhenNotExist() {
 
+        touristAccountService.deleteAll();
         touristAccountService.deleteUser((long) 2);
 
     }
@@ -107,7 +105,7 @@ public class TouristAccountServiceTest {
     public void getUserLikeByEmail() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(tourist,tourist1)), touristAccountService.getUserLikeByEmail("lord"));
+        assertEquals(new ArrayList<>(Arrays.asList(tourist,tourist1,tourist2)), touristAccountService.getUserLikeByEmail("@gmail.com"));
 
     }
 
@@ -115,7 +113,7 @@ public class TouristAccountServiceTest {
     public void getUserLikeByUserName() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(tourist,tourist1)), touristAccountService.getUserLikeByUserName("991"));
+        assertEquals(new ArrayList<>(Arrays.asList(tourist,tourist1,tourist2)), touristAccountService.getUserLikeByUserName("r"));
 
     }
 

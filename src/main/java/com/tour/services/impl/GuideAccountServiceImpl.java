@@ -6,14 +6,15 @@ import com.tour.model.enums.UserRole;
 import com.tour.repository.GuideRepository;
 import com.tour.services.GroupService;
 import com.tour.services.GuideAccountService;
+import com.tour.services.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -21,14 +22,20 @@ public class GuideAccountServiceImpl implements GuideAccountService {
 
     private GroupService groupService;
     private GuideRepository guideRepository;
+    private TourService tourService;
     private PasswordEncoder encoder;
 
+
+
     @Autowired
-    public GuideAccountServiceImpl(GroupService groupService, GuideRepository guideRepository, PasswordEncoder encoder) {
+    public GuideAccountServiceImpl(GroupService groupService, GuideRepository guideRepository, TourService tourService, PasswordEncoder encoder) {
         this.groupService = groupService;
         this.guideRepository = guideRepository;
+        this.tourService = tourService;
         this.encoder = encoder;
     }
+
+
 
 
 
@@ -87,6 +94,7 @@ public class GuideAccountServiceImpl implements GuideAccountService {
         user.setPassword(encoder.encode(user.getPassword()));
         guideRepository.save(user);
     }
+
     public void joinInGroup(long guideId,long groupId){
 
         Group group = groupService.getGroupById(groupId);
@@ -97,7 +105,7 @@ public class GuideAccountServiceImpl implements GuideAccountService {
         }
         else {
         group.setGuide(guide);
-        guide.addGroup(group);
+        guide.joinInToGroup(group);
 
         groupService.addGroup(group);
         guideRepository.save(guide);
@@ -105,5 +113,16 @@ public class GuideAccountServiceImpl implements GuideAccountService {
 
 
     }
+
+    public boolean inGroup(long guideID, long tourId){
+
+        List<Group> tourGroup = tourService.getTourById(tourId).getGroups();
+
+        Set<Group> guideGroups = guideRepository.findOne(guideID).getGroups();
+
+       return !Collections.disjoint(tourGroup,guideGroups);
+
+    }
 }
+
 
