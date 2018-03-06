@@ -23,7 +23,7 @@ public class Tour implements ITour {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "name")
@@ -57,7 +57,7 @@ public class Tour implements ITour {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL, mappedBy = "tour")
+    @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy = "tour")
     private List<Group> groups = new ArrayList<Group>() {
     };
 

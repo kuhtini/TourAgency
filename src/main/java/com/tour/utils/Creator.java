@@ -5,13 +5,12 @@ import com.tour.model.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-  public class  Creator {
-
+public class Creator {
 
 
     private static BaseUser.Role ROLE_USER = BaseUser.Role.ROLE_USER;
-    private static BaseUser.Role ROLE_STAFF =BaseUser.Role.ROLE_STAFF;
-    private static BaseUser.Role ROLE_ADMIN =BaseUser.Role.ROLE_ADMIN;
+    private static BaseUser.Role ROLE_STAFF = BaseUser.Role.ROLE_STAFF;
+    private static BaseUser.Role ROLE_ADMIN = BaseUser.Role.ROLE_ADMIN;
 
     private static final Integer[] MOBILE_OPERATOR_CODES = new Integer[]{
             33,
@@ -131,35 +130,34 @@ import java.util.*;
     }
 
     public static Tourist nextTourist() {
-          Tourist tourist = new Tourist();
-          tourist.setUserName(NameGenerator.generateName());
-          tourist.setEmail(tourist.getUserName() + nextInt(100) + "@gmail.com");
-          tourist.setLastName(NameGenerator.generateName());
-          tourist.setFirstName(NameGenerator.generateName());
-          tourist.setRoles(new HashSet<>(Arrays.asList(ROLE_USER)));
-          tourist.setPassword("12345678AAa");
-          tourist.setPhone(nextPhoneNumber());
-          return tourist;
-      }
+        Tourist tourist = new Tourist();
+        tourist.setUserName(NameGenerator.generateName());
+        tourist.setEmail(tourist.getUserName() + nextInt(100) + "@gmail.com");
+        tourist.setLastName(NameGenerator.generateName());
+        tourist.setFirstName(NameGenerator.generateName());
+        tourist.setRoles(new HashSet<>(Arrays.asList(ROLE_USER)));
+        tourist.setPassword("12345678AAa");
+        tourist.setPhone(nextPhoneNumber());
+        return tourist;
+    }
 
-      public static Tourist setupAdmin() {
-          Tourist tourist = new Tourist();
-          tourist.setUserName(Admin.ADMIN);
-          tourist.setEmail(tourist.getUserName() + nextInt(100) + "@gmail.com");
-          tourist.setLastName(NameGenerator.generateName());
-          tourist.setFirstName(NameGenerator.generateName());
-          tourist.setRoles(new HashSet<>(Arrays.asList(ROLE_USER,ROLE_STAFF,ROLE_ADMIN)));
-          tourist.setPassword(Admin.PASSWORD);
-          tourist.setPhone(nextPhoneNumber());
-          return tourist;
-      }
+    public static Tourist setupAdmin() {
+        Tourist tourist = new Tourist();
+        tourist.setUserName(Admin.ADMIN);
+        tourist.setEmail(tourist.getUserName() + nextInt(100) + "@gmail.com");
+        tourist.setLastName(NameGenerator.generateName());
+        tourist.setFirstName(NameGenerator.generateName());
+        tourist.setRoles(new HashSet<>(Arrays.asList(ROLE_USER, ROLE_STAFF, ROLE_ADMIN)));
+        tourist.setPassword(Admin.PASSWORD);
+        tourist.setPhone(nextPhoneNumber());
+        return tourist;
+    }
 
     private static Tourist setupTourist() {
         Tourist tourist = nextTourist();
         tourist.setUserName("ARHANGEL991");
         return tourist;
     }
-
 
 
     public static Guide nextGuide() {
@@ -175,8 +173,6 @@ import java.util.*;
     }
 
 
-
-
     public static Tour nextTour() {
         Tour tour = new Tour();
         tour.setDescription(nextDescription());
@@ -185,6 +181,8 @@ import java.util.*;
         tour.setStatus(nextTourStatus());
         tour.setFromDate(new GregorianCalendar(2017, Calendar.FEBRUARY, 11).getTime());
         tour.setByDate(new GregorianCalendar(2017, Calendar.FEBRUARY, 28).getTime());
+        //        tour.setFromDate(ZonedDateTime.of(2017,Calendar.FEBRUARY,11,0,0,0,0, ZoneId.systemDefault()));
+        //        tour.setByDate(ZonedDateTime.of(2017,Calendar.FEBRUARY,11,0,0,0,0, ZoneId.systemDefault()));
         tour.setPrice(nextPrice());
         tour.setCities(Arrays.asList(nextCity(), nextCity(), nextCity()));
         return tour;

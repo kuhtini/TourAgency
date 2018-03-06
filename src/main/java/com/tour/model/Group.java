@@ -14,11 +14,11 @@ import java.util.Set;
 public class Group implements IGroup {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Guide.class)
     private Guide guide;
 
     @ManyToOne

@@ -40,8 +40,8 @@ public class GuideAccountServiceImpl implements GuideAccountService {
 
 
 
-    public void saveUser(Guide user) {
-        guideRepository.save(user);
+    public Guide saveUser(Guide user) {
+      return   guideRepository.save(user);
 
     }
 
@@ -90,9 +90,9 @@ public class GuideAccountServiceImpl implements GuideAccountService {
         guideRepository.deleteAll();
     }
 
-    public void addNewUser(Guide user) {
+    public Guide addNewUser(Guide user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        guideRepository.save(user);
+       return guideRepository.save(user);
     }
 
     public void joinInGroup(long guideId,long groupId){

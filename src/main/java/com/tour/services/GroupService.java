@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface GroupService {
 
-    void addGroup(Group group);
+    Group addGroup(Group group);
 
     void deleteGroup(Group group);
 
@@ -26,7 +26,5 @@ public interface GroupService {
     List<Group> getAllGroups ();
 
 
-
-
-
+    void deleteAll();
 }

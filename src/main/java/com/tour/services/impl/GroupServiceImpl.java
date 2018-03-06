@@ -7,7 +7,6 @@ import com.tour.model.Tourist;
 import com.tour.repository.GroupRepository;
 import com.tour.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,8 +25,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
 
-    public void addGroup(Group group) {
-         groupRepository.save(group);
+    public Group addGroup(Group group) {
+         return groupRepository.save(group);
     }
 
     public void deleteGroup(Group group) {
@@ -56,5 +55,10 @@ public class GroupServiceImpl implements GroupService {
 
     public List<Group> getAllGroups() {
         return groupRepository.findAll();
+    }
+
+
+    public void deleteAll() {
+        groupRepository.deleteAll();
     }
 }

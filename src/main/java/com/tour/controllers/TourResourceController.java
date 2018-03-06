@@ -40,18 +40,18 @@ public class TourResourceController {
 
 
      @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/tours/{id}/join", method = RequestMethod.PUT)
+    @RequestMapping(value = "/tours/{tourId}/join", method = RequestMethod.PUT)
     @ResponseBody
-    public PersistentEntityResource joinInGroup(@PathVariable("id") Long id, PersistentEntityResourceAssembler assembler) {
+    public PersistentEntityResource joinInGroup(@PathVariable("tourId") Long tourId, PersistentEntityResourceAssembler assembler) {
 
         @NotNull
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Tourist tourist = touristAccountService.getUserByUserName(auth.getName());
 
         if (tourist != null) {
-            if (!touristAccountService.inGroup(tourist.getId(), id)) {                  //if tourist not in group
+            if (!touristAccountService.inGroup(tourist.getId(), tourId)) {                  //if tourist not in group
 
-                List<Group> groupList = tourService.getTourById(id).getGroups();
+                List<Group> groupList = tourService.getTourById(tourId).getGroups();
 
                 tourist.joinInToGroup(groupList.get(groupList.size() - 1));
                 touristAccountService.saveUser(tourist);
@@ -63,10 +63,14 @@ public class TourResourceController {
 
             Guide guide = guideAccountService.getUserByUserName(auth.getName());
 
-            if (!guideAccountService.inGroup(guide.getId(), id)) {
-                List<Group> groupList = tourService.getTourById(id).getGroups();
+            if (!guideAccountService.inGroup(guide.getId(), tourId)) {
+                List<Group> groupList = tourService.getTourById(tourId).getGroups();
                 guide.joinInToGroup(groupList.get(groupList.size() - 1));
+
                 guideAccountService.saveUser(guide);
+
+                guideAccountService.getUserById(guide.getId());
+                groupService.getGroupsByGuide(guide);
             }
             return assembler.toFullResource(guide);
         }
@@ -75,16 +79,16 @@ public class TourResourceController {
 
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/tours/{id}/getOut", method = RequestMethod.PUT)
+    @RequestMapping(value = "/tours/{tourId}/getOut", method = RequestMethod.PUT)
     @ResponseBody
-    public PersistentEntityResource getOut(@PathVariable("id") Long id, PersistentEntityResourceAssembler assembler) {
+    public PersistentEntityResource getOut(@PathVariable("tourId") Long tourId, PersistentEntityResourceAssembler assembler) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Tourist tourist = touristAccountService.getUserByUserName(auth.getName());
 
         if (tourist != null) {
-            if (touristAccountService.inGroup(tourist.getId(), id)) {                  //if tourist  in group
-                List<Group> groupList = tourService.getTourById(id).getGroups();
+            if (touristAccountService.inGroup(tourist.getId(), tourId)) {                  //if tourist  in group
+                List<Group> groupList = tourService.getTourById(tourId).getGroups();
 
                 for (Group group : groupList) {
                     if (tourist.getGroups().contains(group))
@@ -97,7 +101,7 @@ public class TourResourceController {
 
         } else {                                                                        //if guide  in group
 
-            return getPersistentEntityResourceForGuide(id, assembler, auth);
+            return getPersistentEntityResourceForGuide(tourId, assembler, auth);
         }
 
 

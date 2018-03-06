@@ -7,9 +7,9 @@ import java.util.List;
 public interface TourService {
 
 
-    void saveTour(Tour tour);
+    Tour saveTour(Tour tour);
 
-    void addNewTour(Tour tour);
+    Tour addNewTour(Tour tour);
 
     void deleteTour(Tour tour);
 

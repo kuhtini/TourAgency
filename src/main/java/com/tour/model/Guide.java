@@ -18,7 +18,7 @@ public class Guide extends BaseUser implements IGuide {
     private Date endVisaDate;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Group> groups = new HashSet<>();
 
 

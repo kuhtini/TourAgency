@@ -1,17 +1,16 @@
 package com.tour.services.intefaces;
 
 
-
-import com.tour.model.Tourist;
 import com.tour.model.enums.UserRole;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
-public interface IUserService<T, ID extends Serializable>{
+public interface IUserService<T, ID extends Serializable> {
 
-    void saveUser(T user);
+    T saveUser(T user);
+
+    T addNewUser(T user);
 
     void deleteUser(T user);
 
@@ -32,8 +31,6 @@ public interface IUserService<T, ID extends Serializable>{
     void deleteUser(ID id);
 
     void deleteAll();
-
-    void addNewUser(T user);
 
     List<T> getAllUsersByUserRole(UserRole userRole);
 

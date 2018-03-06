@@ -34,13 +34,13 @@ public class TouristAccountServiceImpl implements TouristAccountService {
         this.encoder = encoder;
     }
 
-    public void saveUser(Tourist user) {
-        touristRepository.save(user);
+    public Tourist saveUser(Tourist user) {
+        return touristRepository.save(user);
     }
 
-    public void addNewUser(Tourist user) {
+    public Tourist addNewUser(Tourist user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        touristRepository.save(user);
+        return touristRepository.save(user);
     }
 
     public void deleteUser(Tourist user) {
@@ -103,13 +103,13 @@ public class TouristAccountServiceImpl implements TouristAccountService {
         }
     }
 
-    public boolean inGroup(long touristID, long tourId){
+    public boolean inGroup(long touristID, long tourId) {
 
         List<Group> tourGroup = tourService.getTourById(tourId).getGroups();
 
         Set<Group> guideGroups = touristRepository.findOne(touristID).getGroups();
 
-        return !Collections.disjoint(tourGroup,guideGroups);
+        return !Collections.disjoint(tourGroup, guideGroups);
 
     }
 }

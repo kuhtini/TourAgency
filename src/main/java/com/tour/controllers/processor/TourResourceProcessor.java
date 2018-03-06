@@ -38,7 +38,6 @@ public class TourResourceProcessor implements ResourceProcessor<Resource<Tour>> 
 
     public Resource<Tour> process(Resource<Tour> tourResource) {
         Tour content = tourResource.getContent();
-        boolean canJoin;
 
         if (content.getStatus() == Tour.TourStatus.ACTIVE || content.getStatus() == Tour.TourStatus.DELAYED) {
 

@@ -5,6 +5,7 @@ import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.Tourist;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
-
+    @Query("select group from Group group where group.guide=:#{#guide}")
     List<Group> findByGuide(Guide guide);
 
     List<Group> findByTourists(Tourist tourist);

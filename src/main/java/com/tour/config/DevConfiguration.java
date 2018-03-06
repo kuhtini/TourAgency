@@ -62,7 +62,6 @@ public class DevConfiguration {
                     log.info("--------------------Create entity " + i + " out of " + amount + " --------------------");
                     tourist = nextTourist();
                     Tour tour = nextTour();
-                    Group group = nextGroup(tour);
 
                     touristService.addNewUser(tourist);
 

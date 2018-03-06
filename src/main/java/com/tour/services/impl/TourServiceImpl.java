@@ -8,6 +8,7 @@ import com.tour.services.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -26,20 +27,21 @@ public class TourServiceImpl implements TourService {
         this.groupService = groupService;
     }
 
-    public void saveTour(Tour tour) {
-        tourRepository.save(tour);
+    public Tour saveTour(Tour tour) {
+        return tourRepository.save(tour);
     }
 
-    public void addNewTour(Tour tour) {
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public Tour addNewTour(Tour tour) {
 
-            Group group = new Group();
-            group.setTour(tour);
-            tourRepository.save(tour);
-            groupService.addGroup(group);
+        Group group = new Group();
+        group.setTour(tour);
+        tourRepository.save(tour);
+        groupService.addGroup(group);
 
         //TODO ExceptionIfExist
 
-
+        return tour;
     }
 
     public void deleteTour(Tour tour) {
