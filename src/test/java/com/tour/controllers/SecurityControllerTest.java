@@ -82,6 +82,7 @@ public class SecurityControllerTest {
     private Tourist admin = setupAdmin(), tourist1 = nextTourist(), tourist2 = nextTourist();
     private Tour tour = nextTour();
     private Guide guide = nextGuide();
+    private Tour sendingTour = nextTour();
 
 
     @Before
@@ -101,21 +102,13 @@ public class SecurityControllerTest {
     public void clean() {
 
         groupService.deleteAll();
-        tourService.deleteAll();
         guideAccountService.deleteAll();
+        tourService.deleteAll();
         touristAccountService.deleteAll();
     }
 
     @Test
-    @Transactional
-    public void addTourByPutJson() throws Exception {
-
-
-        //TimeZone timeZone = TimeZone.getDefault();
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        //objectMapper.setDateFormat(dateFormat);
-        //objectMapper.setTimeZone(timeZone);
-        Tour sendingTour = nextTour();
+    public void addTourByPutJson() throws Exception {   //TODO fix Null userType
 
 
         sendingTour.setStatus(Tour.TourStatus.ACTIVE);
@@ -126,7 +119,7 @@ public class SecurityControllerTest {
                 .accept(MediaTypes.HAL_JSON)
                 .content(putBodyTour)
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(user(userDetailsService.loadUserByUsername(admin.getUserName()))));
+                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))));
 
         sendingTour = tourService.getTourById(tourService.getAllTours().get(1).getId());
 
@@ -137,7 +130,6 @@ public class SecurityControllerTest {
                 .andExpect(jsonPath("$.byDate", is(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(sendingTour.getByDate()))))
                 .andExpect(jsonPath("$.status", is(sendingTour.getStatus().name())))
                 .andExpect(jsonPath("$.startCity", is(sendingTour.getStartCity())))
-                .andExpect(jsonPath("$.cities", is(sendingTour.getCities())))
                 .andExpect(jsonPath("$.price", is(sendingTour.getPrice())))
                 .andExpect(jsonPath("$.description", is(sendingTour.getDescription())))
                 .andExpect(jsonPath("$._links.join.href", is(linkTo(methodOn(TourResourceController.class).joinInGroup(sendingTour.getId(), null)).toString())));
@@ -148,16 +140,13 @@ public class SecurityControllerTest {
     @Test
     public void linksForGuideInTour() throws Exception {
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .post("/tours")
+                .get("/tours")
                 .accept(MediaTypes.HAL_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(user(userDetailsService.loadUserByUsername(admin.getUserName()))));
     }
 
-    //    @Test
-//    public void currentUserNameGuide() throws Exception {
-//    }
-//
+
     @Test
     public void anonymousCantJoinInTheTour() throws Exception {
 
@@ -186,23 +175,8 @@ public class SecurityControllerTest {
 
     }
 
-    @Test
-    public void guideJoinLinkToGroup() throws Exception {
-
-
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .get("/tours/" + tour.getId())
-                .accept(MediaTypes.HAL_JSON)
-                .contentType(MediaType.APPLICATION_JSON));
-
-
-        resultActions.andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$._links.join").doesNotExist());
-
-    }
 
     @Test
-    @Transactional
     public void guideOutLinkFromGroup() throws Exception {
 
 
@@ -219,8 +193,6 @@ public class SecurityControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))));
 
-
-        Set<Group> groups = guide.getGroups();
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .get("/tours/" + tour.getId())
