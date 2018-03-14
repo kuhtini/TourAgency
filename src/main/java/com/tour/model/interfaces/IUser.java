@@ -2,10 +2,7 @@ package com.tour.model.interfaces;
 
 
 import com.tour.model.BaseUser;
-import com.tour.model.Group;
-import com.tour.model.Role;
 
-import java.util.Base64;
 import java.util.Set;
 
 public interface IUser extends IdContain {
@@ -23,8 +20,6 @@ public interface IUser extends IdContain {
     String getEmail();
 
     String getPhone();
-
-
 
 
 }

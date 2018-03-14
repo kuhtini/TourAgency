@@ -1,8 +1,8 @@
 package com.tour.security;
 
 import com.tour.model.BaseUser;
-import com.tour.model.Role;
 import com.tour.model.interfaces.IUser;
+import com.tour.repository.BaseUserRepository;
 import com.tour.repository.GuideRepository;
 import com.tour.repository.TouristRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -20,26 +19,15 @@ import java.util.Set;
 @Service
 public class RestUserDetailServiceImpl implements UserDetailsService {
 
-
-    private TouristRepository touristRepository;
-
-    private GuideRepository guideRepository;
-
     @Autowired
-    public RestUserDetailServiceImpl(TouristRepository touristRepository, GuideRepository guideRepository) {
-        this.touristRepository = touristRepository;
-        this.guideRepository = guideRepository;
-    }
+    private BaseUserRepository userRepository;
 
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 
-        IUser user = guideRepository.findByUserName(s);
-        if (user == null) {
-            user = touristRepository.findByUserName(s);
-        }
+        BaseUser user = userRepository.findByUserName(username);
 
-        if (user == null) throw new UsernameNotFoundException(s + " not found");
+        if (user == null) throw new UsernameNotFoundException(username + " not found");
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 

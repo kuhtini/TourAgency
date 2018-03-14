@@ -1,16 +1,22 @@
 package com.tour.utils;
 
 import com.tour.model.*;
+import javafx.application.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Creator {
+
+public final class Creator {
 
 
-    private static BaseUser.Role ROLE_USER = BaseUser.Role.ROLE_USER;
-    private static BaseUser.Role ROLE_STAFF = BaseUser.Role.ROLE_STAFF;
-    private static BaseUser.Role ROLE_ADMIN = BaseUser.Role.ROLE_ADMIN;
+
+    private static final Logger log = LoggerFactory.getLogger(Application.class);
+
+    private static final BaseUser.Role ROLE_USER = BaseUser.Role.ROLE_USER;
+    private static final BaseUser.Role ROLE_STAFF = BaseUser.Role.ROLE_STAFF;
+    private static final BaseUser.Role ROLE_ADMIN = BaseUser.Role.ROLE_ADMIN;
 
     private static final Integer[] MOBILE_OPERATOR_CODES = new Integer[]{
             33,

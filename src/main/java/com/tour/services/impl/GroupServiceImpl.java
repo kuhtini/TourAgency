@@ -13,20 +13,20 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+//@Transactional
 public class GroupServiceImpl implements GroupService {
 
 
-   private GroupRepository groupRepository;
+    private GroupRepository groupRepository;
 
-   @Autowired
+    @Autowired
     public GroupServiceImpl(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
     }
 
 
     public Group addGroup(Group group) {
-         return groupRepository.save(group);
+        return groupRepository.save(group);
     }
 
     public void deleteGroup(Group group) {

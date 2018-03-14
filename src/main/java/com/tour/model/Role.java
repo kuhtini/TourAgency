@@ -27,7 +27,7 @@ public class Role {
     private UserRole name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<BaseUser> baseUsers;
 
     public Role() {

@@ -1,8 +1,6 @@
 package com.tour.model;
 
 import com.tour.model.interfaces.IGroup;
-import com.tour.model.interfaces.IGuide;
-import com.tour.model.interfaces.ITour;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -36,7 +34,7 @@ public class Group implements IGroup {
             )
     )
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Tourist> tourists = new HashSet<>();
+    private Set<BaseUser> tourists = new HashSet<>();
 
 
     @Override
@@ -67,22 +65,22 @@ public class Group implements IGroup {
     }
 
     @Override
-    public Set<Tourist> getTourists() {
+    public Set<BaseUser> getTourists() {
         return tourists;
     }
 
-    public void setTourists(Set<Tourist> tourists) {
+    public void setTourists(Set<BaseUser> tourists) {
         this.tourists = tourists;
     }
 
-    public void addTourist(Tourist tourist){
-        if (tourists == null){
+    public void addTourist(BaseUser tourist) {
+        if (tourists == null) {
             tourists = new HashSet<>();
         }
         tourists.add(tourist);
     }
 
-    public Group(Guide guide, Tour tour, Set<Tourist> tourists) {
+    public Group(Guide guide, Tour tour, Set<BaseUser> tourists) {
         this.guide = guide;
         this.tour = tour;
         this.tourists = tourists;

@@ -1,8 +1,8 @@
 package com.tour.services.impl;
 
 import com.tour.model.Group;
-import com.tour.model.enums.UserRole;
 import com.tour.model.Tourist;
+import com.tour.model.enums.UserRole;
 import com.tour.repository.TouristRepository;
 import com.tour.services.GroupService;
 import com.tour.services.TourService;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
+//@Transactional
 public class TouristAccountServiceImpl implements TouristAccountService {
 
 
@@ -103,7 +103,7 @@ public class TouristAccountServiceImpl implements TouristAccountService {
         }
     }
 
-    public boolean inGroup(long touristID, long tourId) {
+    public boolean isInGroup(long touristID, long tourId) {
 
         List<Group> tourGroup = tourService.getTourById(tourId).getGroups();
 

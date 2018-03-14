@@ -7,9 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Set;
 
 
@@ -17,14 +16,14 @@ import java.util.Set;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type")
-public class BaseUser implements IUser {
+public class BaseUser implements IUser, Serializable {
 
     public enum UserType {
         TOURIST,
         GUIDE
     }
 
-    public enum Role{
+    public enum Role {
         ROLE_USER,
         ROLE_STAFF,
         ROLE_ADMIN
@@ -36,7 +35,7 @@ public class BaseUser implements IUser {
 
     @Size(max = 50)
     @NotEmpty
-   // @Pattern(regexp="^[\\pL '-]+$")
+    // @Pattern(regexp="^[\\pL '-]+$")
     @Column(name = "user_name", unique = true)
     private String userName;
 
@@ -57,8 +56,9 @@ public class BaseUser implements IUser {
     @Column(name = "phone")
     private String phone;
 
-
-
+    @Column(name = "user_type", insertable = false, updatable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserType userType;
 
     @Column(unique = true)
     private String email;
@@ -85,7 +85,7 @@ public class BaseUser implements IUser {
     }
 
     //GetSet
-    public long getId () {
+    public long getId() {
         return id;
     }
 
@@ -137,7 +137,7 @@ public class BaseUser implements IUser {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<BaseUser.Role> roles) {
 
         this.roles = roles;
 
@@ -170,6 +170,13 @@ public class BaseUser implements IUser {
     //EndGetSet
 
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
 
     public String toString() {
         return new ToStringCreator(this)

@@ -23,7 +23,7 @@ public interface GroupService {
 
     List<Group> getGroupsByTour(Tour tour);
 
-    List<Group> getAllGroups ();
+    List<Group> getAllGroups();
 
 
     void deleteAll();

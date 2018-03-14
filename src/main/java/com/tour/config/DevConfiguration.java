@@ -1,12 +1,12 @@
 package com.tour.config;
 
-import com.tour.model.*;
-import com.tour.model.enums.UserRole;
+import com.tour.model.Guide;
+import com.tour.model.Tour;
+import com.tour.model.Tourist;
 import com.tour.services.GroupService;
 import com.tour.services.GuideAccountService;
 import com.tour.services.TourService;
 import com.tour.services.TouristAccountService;
-import com.tour.services.impl.TouristAccountServiceImpl;
 import javafx.application.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +14,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.awt.*;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.List;
+import javax.transaction.Transactional;
 
 import static com.tour.utils.Creator.*;
 
@@ -34,11 +28,6 @@ public class DevConfiguration {
 
 
 
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 
     @Bean
@@ -62,19 +51,19 @@ public class DevConfiguration {
                     log.info("--------------------Create entity " + i + " out of " + amount + " --------------------");
                     tourist = nextTourist();
                     Tour tour = nextTour();
-
+                    log.debug("--------------------Create entity DONE" + i + " out of " + amount + "--------------------");
+                    log.debug("--------------------Commit entity " + i + " out of " + amount + " --------------------");
                     touristService.addNewUser(tourist);
 
                     tourService.addNewTour(tour);
-
-                   // groupService.joinInToGroup(group);
+                    log.debug("--------------------Commit entity DONE " + i + " out of " + amount + "--------------------");
+                    // groupService.joinInToGroup(group);
                 }
 
                 //Admin Setup
 
 
-
-                for (int i = 0; i < amount/4; i++) {
+                for (int i = 0; i < amount / 4; i++) {
                     log.info("--------------------Create guide " + i + " out of " + amount + " --------------------");
                     Guide guide = nextGuide();
                     guideService.addNewUser(guide);

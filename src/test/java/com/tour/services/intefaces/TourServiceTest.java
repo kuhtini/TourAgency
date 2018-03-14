@@ -30,7 +30,7 @@ public class TourServiceTest {
     @Autowired
     private TourService tourService;
 
-    private Tour tour =new Tour();
+    private Tour tour = new Tour();
 
 
     @Before
@@ -44,23 +44,20 @@ public class TourServiceTest {
     @Test
     public void addTour() throws Exception {
 
-        assertEquals(tour,tourService.getTourById(tour.getId()));
+        assertEquals(tour, tourService.getTourById(tour.getId()));
     }
 
     @Test
     public void getAllTours() throws Exception {
 
-        assertEquals(Arrays.asList(tour),tourService.getAllTours());
+        assertEquals(Arrays.asList(tour), tourService.getAllTours());
     }
 
     @Test
     public void deleteAll() throws Exception {
         tourService.deleteAll();
-        assertEquals(new ArrayList<Tour>(),tourService.getAllTours());
+        assertEquals(new ArrayList<Tour>(), tourService.getAllTours());
     }
-
-
-
 
 
 }

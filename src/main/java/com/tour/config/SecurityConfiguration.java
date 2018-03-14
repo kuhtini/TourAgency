@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,12 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -52,22 +49,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/api/tours/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PUT, "/api/tours/**").hasRole("STAFF")
 //                .antMatchers(HttpMethod.PATCH, "/api/tours/**").hasRole("STAFF")
-                .antMatchers(HttpMethod.DELETE, "/api/tours/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.DELETE, "/tours/**").hasRole("STAFF")
 //
-//                .antMatchers(HttpMethod.POST, "/api/groups/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/api/groups/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/api/groups/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.DELETE, "/api/groups/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.POST, "/groups/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.PUT, "/groups/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.PATCH, "/groups/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.DELETE, "/groups/**").hasRole("STAFF")
 //
-//                .antMatchers(HttpMethod.POST, "/api/tourists/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/api/tourists/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/api/tourists/**").hasRole("STAFF")
-                .antMatchers(HttpMethod.DELETE, "/api/tourists/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.GET, "/tourists/me").hasRole("USER")
+
+                .antMatchers(HttpMethod.GET, "/tourists/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.POST, "/tourists/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.PUT, "/tourists/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.PATCH, "/tourists/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.DELETE, "/tourists/**").hasRole("STAFF")
 //
-//                .antMatchers(HttpMethod.POST, "/api/guides/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/api/guides/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/api/guides/**").hasRole("STAFF")
-               .antMatchers(HttpMethod.DELETE, "/api/guides/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.GET, "/guides/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.POST, "/guides/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.PUT, "/guides/**").hasRole("STAFF")
+//                .antMatchers(HttpMethod.PATCH, "/guides/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.DELETE, "/guides/**").hasRole("STAFF")
                 .and()
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin();

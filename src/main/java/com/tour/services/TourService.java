@@ -4,6 +4,7 @@ import com.tour.model.Tour;
 
 import java.util.Date;
 import java.util.List;
+
 public interface TourService {
 
 
@@ -28,7 +29,6 @@ public interface TourService {
     Tour getTourById(long id);
 
     void deleteAll();
-
 
 
 }

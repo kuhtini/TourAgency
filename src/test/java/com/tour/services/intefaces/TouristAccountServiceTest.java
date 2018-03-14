@@ -35,7 +35,7 @@ public class TouristAccountServiceTest {
     private TouristAccountService touristAccountService;
 
 
-     private Tourist tourist = new Tourist(),tourist1= new Tourist(),tourist2= new Tourist();
+    private Tourist tourist = new Tourist(), tourist1 = new Tourist(), tourist2 = new Tourist();
 
     @Before
     public void setUp() throws Exception {
@@ -51,7 +51,6 @@ public class TouristAccountServiceTest {
         touristAccountService.saveUser(tourist2);
 
     }
-
 
 
     @Test
@@ -72,10 +71,10 @@ public class TouristAccountServiceTest {
     public void getAllUsersWhenEmpty() throws Exception {
         touristAccountService.deleteAll();
         assertEquals(touristAccountService.getAllUsers(), new ArrayList<Tourist>());
-   }
+    }
 
 
-    @Test(expected = EmptyResultDataAccessException.class )
+    @Test(expected = EmptyResultDataAccessException.class)
     public void deleteWhenNotExist() {
 
         touristAccountService.deleteAll();
@@ -95,7 +94,6 @@ public class TouristAccountServiceTest {
     public void getUserByEmail() throws Exception {
 
 
-
         assertEquals(tourist, touristAccountService.getUserByEmail(tourist.getEmail()));
 
 
@@ -105,7 +103,7 @@ public class TouristAccountServiceTest {
     public void getUserLikeByEmail() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(tourist,tourist1,tourist2)), touristAccountService.getUserLikeByEmail("@gmail.com"));
+        assertEquals(new ArrayList<>(Arrays.asList(tourist, tourist1, tourist2)), touristAccountService.getUserLikeByEmail("@gmail.com"));
 
     }
 
@@ -113,7 +111,7 @@ public class TouristAccountServiceTest {
     public void getUserLikeByUserName() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(tourist,tourist1,tourist2)), touristAccountService.getUserLikeByUserName("r"));
+        assertEquals(new ArrayList<>(Arrays.asList(tourist, tourist1, tourist2)), touristAccountService.getUserLikeByUserName("r"));
 
     }
 
@@ -121,15 +119,14 @@ public class TouristAccountServiceTest {
     public void getUserById() throws Exception {
 
 
-        assertEquals(tourist,touristAccountService.getUserById(tourist.getId()));
+        assertEquals(tourist, touristAccountService.getUserById(tourist.getId()));
     }
 
     @Test
     public void getUsersByLastName() throws Exception {
 
 
-
-        assertEquals(touristAccountService.getUsersByLastName(tourist2.getLastName()),Arrays.asList(tourist2));
+        assertEquals(touristAccountService.getUsersByLastName(tourist2.getLastName()), Arrays.asList(tourist2));
     }
 
 }

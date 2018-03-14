@@ -130,7 +130,7 @@ public class GuideAccountServiceTest {
     public void getUserLikeByEmail() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1,guide2)), guideAccountService.getUserLikeByEmail("@gmail.com"));
+        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1, guide2)), guideAccountService.getUserLikeByEmail("@gmail.com"));
 
     }
 
@@ -138,7 +138,7 @@ public class GuideAccountServiceTest {
     public void getUserLikeByUserName() throws Exception {
 
 
-        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1,guide2)), guideAccountService.getUserLikeByUserName("r"));
+        assertEquals(new ArrayList<>(Arrays.asList(guide, guide1, guide2)), guideAccountService.getUserLikeByUserName("r"));
 
     }
 

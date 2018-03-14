@@ -13,8 +13,6 @@ import java.util.List;
 public class Tour implements ITour {
 
 
-
-
     public enum TourStatus {
         CANCELED,
         DELAYED,
@@ -30,13 +28,13 @@ public class Tour implements ITour {
     private String name;
 
     @Column(name = "from_date")
-   // @Temporal(TemporalType.DATE)
+    // @Temporal(TemporalType.DATE)
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date fromDate;
 
     @Column(name = "by_date")
-   // @Temporal(TemporalType.DATE)
+    // @Temporal(TemporalType.DATE)
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date byDate;
@@ -57,7 +55,7 @@ public class Tour implements ITour {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, mappedBy = "tour")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "tour")
     private List<Group> groups = new ArrayList<Group>() {
     };
 
