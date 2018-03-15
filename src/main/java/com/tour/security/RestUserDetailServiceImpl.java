@@ -1,10 +1,7 @@
 package com.tour.security;
 
 import com.tour.model.BaseUser;
-import com.tour.model.interfaces.IUser;
 import com.tour.repository.BaseUserRepository;
-import com.tour.repository.GuideRepository;
-import com.tour.repository.TouristRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,8 +16,13 @@ import java.util.Set;
 @Service
 public class RestUserDetailServiceImpl implements UserDetailsService {
 
+    private final BaseUserRepository userRepository;
+
     @Autowired
-    private BaseUserRepository userRepository;
+    public RestUserDetailServiceImpl(BaseUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

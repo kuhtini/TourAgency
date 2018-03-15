@@ -55,7 +55,7 @@ public class Tour implements ITour {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, mappedBy = "tour", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "tour", orphanRemoval = true)
     private List<Group> groups = new ArrayList<Group>() {
     };
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+
 public interface BaseUserRepository extends JpaRepository<BaseUser,Long> , BaseUserMethods<BaseUser> {
 
     List<BaseUser> findByLastName(String lastName);
