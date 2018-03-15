@@ -26,9 +26,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Set;
 
@@ -44,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 //@ComponentScan({"com.tour"})
 @AutoConfigureMockMvc
-
 public class SecurityControllerTest {
 
 
@@ -210,13 +209,7 @@ public class SecurityControllerTest {
     @Test
     public void guideOutLinkFromGroupAsTourist() throws Exception {
 
-
-//        Tour tour = nextTour();
-//
-//        tourService.addNewTour(tour);
-//        tour = tourService.getTourById(tour.getId());
-//        groupService.getGroupsByTour(tour);
-
+        
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/tours/" + tour.getId() + "/joinAsTourist")
@@ -325,4 +318,5 @@ public class SecurityControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.tourists").exists());
     }
+
 }

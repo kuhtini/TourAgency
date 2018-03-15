@@ -33,7 +33,7 @@ public class Group implements IGroup {
                     referencedColumnName = "id"
             )
     )
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private Set<BaseUser> tourists = new HashSet<>();
 
 
