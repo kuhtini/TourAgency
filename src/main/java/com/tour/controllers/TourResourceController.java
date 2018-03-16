@@ -1,9 +1,11 @@
 package com.tour.controllers;
 
 import com.sun.istack.internal.NotNull;
+import com.tour.exeptions.TravelUserInvalidTourMethodException;
 import com.tour.model.BaseUser;
 import com.tour.model.Group;
 import com.tour.model.Guide;
+import com.tour.model.Tour;
 import com.tour.model.interfaces.ITravelUser;
 import com.tour.repository.BaseUserRepository;
 import com.tour.services.GroupService;
@@ -12,16 +14,19 @@ import com.tour.services.TourService;
 import com.tour.services.TouristAccountService;
 import com.tour.services.intefaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ControllerUtils;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.ResourceSupport;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -35,7 +40,11 @@ public class TourResourceController {
     private final BaseUserRepository userRepository;
 
     @Autowired
-    public TourResourceController(TourService tourService, TouristAccountService touristAccountService, GuideAccountService guideAccountService, GroupService groupService, BaseUserRepository userRepository) {
+    public TourResourceController(TourService tourService,
+                                  TouristAccountService touristAccountService,
+                                  GuideAccountService guideAccountService,
+                                  GroupService groupService,
+                                  BaseUserRepository userRepository) {
         this.tourService = tourService;
         this.touristAccountService = touristAccountService;
         this.guideAccountService = guideAccountService;
@@ -126,6 +135,29 @@ public class TourResourceController {
         return fullResource;
     }
 
+    @PreAuthorize("hasRole('ROLE_STAFF')")
+    @RequestMapping(value = "/tours", method = RequestMethod.POST, consumes = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<ResourceSupport> addNewTour(@RequestBody Tour tour, PersistentEntityResourceAssembler assembler) {
+
+
+        return createAndReturn(tour, assembler, true);
+    }
+
+    private ResponseEntity<ResourceSupport> createAndReturn(Tour domainTour, PersistentEntityResourceAssembler assembler, boolean returnBody) {
+
+        Tour savedTour = tourService.addNewTour(domainTour);
+
+        PersistentEntityResource resource = returnBody ? assembler.toFullResource(savedTour) : null;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(savedTour.getId()).toUri());
+
+        return ControllerUtils.toResponseEntity(HttpStatus.CREATED, httpHeaders, resource);
+    }
+
+
     private <T extends ITravelUser> T joinUserInGroup(Long tourId, T user, IUserService<T, Long> userService) {
 
 
@@ -135,6 +167,8 @@ public class TourResourceController {
             user.joinInToGroup(groupList.get(groupList.size() - 1));
 
             userService.saveUser(user);
+        } else {
+            throw new TravelUserInvalidTourMethodException("User " + user.getUserName() + " already in the tour");
         }
         return user;
     }
@@ -153,10 +187,11 @@ public class TourResourceController {
                 }
             }
             userService.saveUser(user);
+        } else {
+            throw new TravelUserInvalidTourMethodException("User " + user.getUserName() + "is not on this tour");
         }
         return user;
     }
-
 
     private Guide leaveGuideFromGroupAsTourist(Long tourId, Guide guide, GuideAccountService guideAccountService) {
 
@@ -188,6 +223,5 @@ public class TourResourceController {
         }
         return guide;
     }
-
 
 }

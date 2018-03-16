@@ -10,11 +10,13 @@ import com.tour.services.GroupService;
 import com.tour.services.GuideAccountService;
 import com.tour.services.TourService;
 import com.tour.services.TouristAccountService;
+import javafx.application.Application;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,20 +25,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.client.MockMvcClientHttpRequestFactory;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
-import java.util.Set;
 
 import static com.tour.utils.Creator.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -46,9 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class SecurityControllerTest {
 
-
-    @Mock
-    private RestTemplate restTemplate;
+    private final Logger log = LoggerFactory.getLogger(Application.class);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -84,6 +85,9 @@ public class SecurityControllerTest {
     private Tour sendingTour = nextTour();
 
 
+    private RestTemplate restTemplate;
+
+
     @Before
     public void init() {
 
@@ -110,6 +114,8 @@ public class SecurityControllerTest {
     public void addTourByPutJson() throws Exception {   //TODO fix Null userType
 
 
+        restTemplate = new RestTemplate(new MockMvcClientHttpRequestFactory(mockMvc));
+
         sendingTour.setStatus(Tour.TourStatus.ACTIVE);
         String putBodyTour = objectMapper.writeValueAsString(sendingTour);
 
@@ -118,20 +124,36 @@ public class SecurityControllerTest {
                 .accept(MediaTypes.HAL_JSON)
                 .content(putBodyTour)
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))));
+                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))))
+                .andDo(print());
 
         sendingTour = tourService.getTourById(tourService.getAllTours().get(1).getId());
+
 
         resultActions.andExpect(status().isCreated())
                 .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/tours/" + sendingTour.getId()))
                 .andExpect(jsonPath("$.name", is(sendingTour.getName())))
-                .andExpect(jsonPath("$.fromDate", is(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(sendingTour.getFromDate()))))
-                .andExpect(jsonPath("$.byDate", is(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(sendingTour.getByDate()))))
+                .andExpect(jsonPath("$.fromDate", is(new SimpleDateFormat("dd-MM-yyyy HH:mm")
+                        .format(sendingTour.getFromDate()))))
+                .andExpect(jsonPath("$.byDate", is(new SimpleDateFormat("dd-MM-yyyy HH:mm")
+                        .format(sendingTour.getByDate()))))
                 .andExpect(jsonPath("$.status", is(sendingTour.getStatus().name())))
                 .andExpect(jsonPath("$.startCity", is(sendingTour.getStartCity())))
                 .andExpect(jsonPath("$.price", is(sendingTour.getPrice())))
                 .andExpect(jsonPath("$.description", is(sendingTour.getDescription())))
-                .andExpect(jsonPath("$._links.join.href", is(linkTo(methodOn(TourResourceController.class).joinInGroup(sendingTour.getId(), null)).toString())));
+                .andExpect(jsonPath("$._links.join.href", is(linkTo(methodOn(TourResourceController.class)
+                        .joinInGroup(sendingTour.getId(), null)).toString())))
+                .andDo(print());
+
+
+        Tour tourFromServer = restTemplate.getForObject("http://localhost/tours/" + sendingTour.getId(), Tour.class);
+
+        Group expectedGroup = sendingTour.getGroups().get(0);
+        Group actualGroup = tourService.getTourById(sendingTour.getId()).getGroups().get(0);
+
+        assertThat(expectedGroup).isEqualTo(actualGroup);
+        //assertTrue(sendingTour.equals(tourFromServer));
+        //assertThat(sendingTour).isEqualTo(tourFromServer);
 
 
     }
@@ -139,10 +161,16 @@ public class SecurityControllerTest {
     @Test
     public void linksForGuideInTour() throws Exception {
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .get("/tours")
+                .get("/tours/" + tour.getId())
                 .accept(MediaTypes.HAL_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(user(userDetailsService.loadUserByUsername(admin.getUserName()))));
+                .with(user(userDetailsService.loadUserByUsername(guide.getUserName())))).andDo(print());
+
+        resultActions
+                .andExpect(jsonPath("$._links.join.href", is(linkTo(methodOn(TourResourceController.class).joinInGroup(tour.getId(), null)).toString())))
+                .andExpect(jsonPath("$._links.joinAsTourist.href", is(linkTo(methodOn(TourResourceController.class).joinInGroupLikeTourist(tour.getId(), null)).toString())));
+
+
     }
 
 
@@ -151,7 +179,7 @@ public class SecurityControllerTest {
 
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .put("/tours/1/join")
+                .put("/tours/" + tour.getId() + "/join")
                 .accept(MediaTypes.HAL_JSON)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -164,16 +192,53 @@ public class SecurityControllerTest {
 
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .get("/tours/1/")
+                .get("/tours/" + tour.getId())
                 .accept(MediaTypes.HAL_JSON)
                 .contentType(MediaType.APPLICATION_JSON));
 
 
-        resultActions.andExpect(status().isNotFound())
+        resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$._links.join").doesNotExist());
 
     }
 
+    @Test
+    public void touristExceptionIfLeaveFromTourThatDoesNotHaveThisTouristInGroups() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/tours/" + tour.getId() + "/join")
+                .accept(MediaTypes.HAL_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(user(userDetailsService.loadUserByUsername(tourist1.getUserName()))));
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .put("/tours/" + tour.getId() + "/join")
+                .accept(MediaTypes.HAL_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(user(userDetailsService.loadUserByUsername(tourist1.getUserName()))));
+
+        resultActions.andExpect(status().isConflict());
+
+    }
+
+    @Test
+    public void guideExceptionIfLeaveFromTourThatDoesNotHaveThisGuideInGroupsLikeGuide() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/tours/" + tour.getId() + "/join")
+                .accept(MediaTypes.HAL_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))));
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .put("/tours/" + tour.getId() + "/join")
+                .accept(MediaTypes.HAL_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))));
+
+        resultActions.andExpect(status().isConflict());
+
+    }
 
     @Test
     public void guideOutLinkFromGroup() throws Exception {
@@ -209,7 +274,6 @@ public class SecurityControllerTest {
     @Test
     public void guideOutLinkFromGroupAsTourist() throws Exception {
 
-        
 
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/tours/" + tour.getId() + "/joinAsTourist")

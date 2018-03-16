@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+
+;
 
 @Service
 //@Transactional
@@ -127,7 +127,7 @@ public class GuideAccountServiceImpl implements GuideAccountService {
 
         List<Group> tourGroup = tourService.getTourById(tourId).getGroups();
 
-        Set<Group> guideGroups = guideRepository.findOne(guideID).getGroups();
+        List<Group> guideGroups = guideRepository.findOne(guideID).getGroups();
 
         return !Collections.disjoint(tourGroup, guideGroups);
 
@@ -137,7 +137,7 @@ public class GuideAccountServiceImpl implements GuideAccountService {
 
         List<Group> tourGroup = tourService.getTourById(tourId).getGroups();
 
-        Set<Group> guideGroups = guideRepository.findOne(guideID).getGroupsLikeTourist();
+        List<Group> guideGroups = guideRepository.findOne(guideID).getGroupsLikeTourist();
 
         return !Collections.disjoint(tourGroup, guideGroups);
 

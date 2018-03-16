@@ -17,15 +17,16 @@ import java.util.List;
 //@Transactional
 public class TourServiceImpl implements TourService {
 
+    private final TourRepository tourRepository;
 
-    private TourRepository tourRepository;
-    private GroupService groupService;
+    private final GroupService groupService;
 
     @Autowired
     public TourServiceImpl(TourRepository tourRepository, GroupService groupService) {
         this.tourRepository = tourRepository;
         this.groupService = groupService;
     }
+
 
     public Tour saveTour(Tour tour) {
         return tourRepository.save(tour);

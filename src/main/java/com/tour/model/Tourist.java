@@ -3,7 +3,8 @@ package com.tour.model;
 import com.tour.model.interfaces.ITouristUser;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -17,9 +18,9 @@ public class Tourist extends BaseUser implements ITouristUser {
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    private Set<Group> groups = new HashSet<>();
+    private List<Group> groups = new ArrayList<>();
 
-    public Tourist(String userName, String password, String firstName, String lastName, boolean active, String email, String confirmPassword, Set<Role> roles, Set<Group> groups) {
+    public Tourist(String userName, String password, String firstName, String lastName, boolean active, String email, String confirmPassword, Set<Role> roles, List<Group> groups) {
         super(userName, password, firstName, lastName, active, email, confirmPassword, roles);
         this.groups = groups;
     }
@@ -28,13 +29,13 @@ public class Tourist extends BaseUser implements ITouristUser {
         super();
     }
 
-    public Set<Group> getGroups() {
+    public List<Group> getGroups() {
         return groups;
     }
 
     public void joinInToGroup(Group group) {
         if (groups == null) {
-            groups = new HashSet<>();
+            groups = new ArrayList<>();
 
         }
         groups.add(group);
@@ -49,7 +50,7 @@ public class Tourist extends BaseUser implements ITouristUser {
     }
 
 
-    public void setGroups(Set<Group> groups) {
+    public void setGroups(List<Group> groups) {
         this.groups = groups;
     }
 

@@ -1,6 +1,7 @@
 package com.tour.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tour.model.interfaces.ITour;
 
 import javax.persistence.*;
@@ -56,75 +57,83 @@ public class Tour implements ITour {
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "tour", orphanRemoval = true)
+    @JsonIgnore
     private List<Group> groups = new ArrayList<Group>() {
     };
 
-
-
+    @Override
     public long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Date getFromDate() {
-        return fromDate;
-    }
-
-    public Date getByDate() {
-        return byDate;
-    }
-
-    public TourStatus getStatus() {
-        return status;
-    }
-
-    public String getStartCity() {
-        return startCity;
-    }
-
-    public List<String> getCities() {
-        return cities;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Date getFromDate() {
+        return fromDate;
     }
 
     public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
+    @Override
+    public Date getByDate() {
+        return byDate;
+    }
+
     public void setByDate(Date byDate) {
         this.byDate = byDate;
+    }
+
+    @Override
+    public TourStatus getStatus() {
+        return status;
     }
 
     public void setStatus(TourStatus status) {
         this.status = status;
     }
 
+    @Override
+    public String getStartCity() {
+        return startCity;
+    }
+
     public void setStartCity(String startCity) {
         this.startCity = startCity;
+    }
+
+    @Override
+    public List<String> getCities() {
+        return cities;
     }
 
     public void setCities(List<String> cities) {
         this.cities = cities;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
+    @Override
     public int getPrice() {
         return price;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    @Override
     public String getDescription() {
         return description;
     }
@@ -133,8 +142,8 @@ public class Tour implements ITour {
         this.description = description;
     }
 
+    @Override
     public List<Group> getGroups() {
-
         return groups;
     }
 

@@ -1,5 +1,6 @@
 package com.tour.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tour.model.interfaces.IGroup;
 
 import javax.persistence.*;
@@ -33,7 +34,8 @@ public class Group implements IGroup {
                     referencedColumnName = "id"
             )
     )
-    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonManagedReference
     private Set<BaseUser> tourists = new HashSet<>();
 
 
@@ -89,5 +91,21 @@ public class Group implements IGroup {
     public Group() {
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Group group = (Group) o;
+
+        if (guide != null ? !guide.equals(group.guide) : group.guide != null) return false;
+        return tour != null ? tour.equals(group.tour) : group.tour == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = guide != null ? guide.hashCode() : 0;
+        result = 31 * result + (tour != null ? tour.hashCode() : 0);
+        return result;
+    }
 }
