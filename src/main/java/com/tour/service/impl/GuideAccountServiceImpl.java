@@ -1,12 +1,12 @@
-package com.tour.services.impl;
+package com.tour.service.impl;
 
 import com.tour.model.Group;
 import com.tour.model.Guide;
 import com.tour.model.enums.UserRole;
 import com.tour.repository.GuideRepository;
-import com.tour.services.GroupService;
-import com.tour.services.GuideAccountService;
-import com.tour.services.TourService;
+import com.tour.service.GroupService;
+import com.tour.service.GuideAccountService;
+import com.tour.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-;
+
 
 @Service
-//@Transactional
 public class GuideAccountServiceImpl implements GuideAccountService {
 
     private GroupService groupService;
@@ -95,7 +94,7 @@ public class GuideAccountServiceImpl implements GuideAccountService {
         Group group = groupService.getGroupById(groupId);
         Guide guide = guideRepository.findOne(guideId);
         if (group.getGuide().equals(guide)) {
-
+            //TODO
             //throw
         } else {
             group.setGuide(guide);
@@ -112,7 +111,7 @@ public class GuideAccountServiceImpl implements GuideAccountService {
         Group group = groupService.getGroupById(groupId);
         Guide guide = guideRepository.findOne(guideId);
         if (group.getGuide().equals(guide)) {
-
+            //TODO
             //throw
         } else {
             group.addTourist(guide);

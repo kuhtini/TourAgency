@@ -1,7 +1,7 @@
-package com.tour.services;
+package com.tour.service;
 
 import com.tour.model.Tourist;
-import com.tour.services.intefaces.IUserService;
+import com.tour.service.intefaces.IUserService;
 
 public interface TouristAccountService extends IUserService<Tourist, Long> {
 

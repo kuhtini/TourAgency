@@ -1,18 +1,13 @@
 package com.tour.utils;
 
 import com.tour.model.*;
-import javafx.application.Application;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
-
+@Slf4j
 public final class Creator {
 
-
-
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     private static final BaseUser.Role ROLE_USER = BaseUser.Role.ROLE_USER;
     private static final BaseUser.Role ROLE_STAFF = BaseUser.Role.ROLE_STAFF;
@@ -69,26 +64,27 @@ public final class Creator {
             "САМЫЕ ВЫГОДНЫЕ ПРЕДЛОЖЕНИЯ В ХУРГАДУ И ШАРМ-ЭЛЬ-ШЕЙХ! ВЫЛЕТЫ ИЗ КИЕВА, МИНСКА, МОГИЛЕВА, ВИТЕБСКА, ГОМЕЛЯ ЛЬВОВА! ГОРЯЩИЕ ДАТЫ И РАННЕЕ БРОНИРОВАНИЕ!",
             "Египет из Киева, Минска и Гомеля! Супер цены на туры с вылетом из Киева! Предоставляем трансфер в аэропорт.",
     };
+    public static final String GMAIL_COM = "@gmail.com";
 
     public static class NameGenerator {
 
-        private static String[] Beginning = {"Kr", "Ca", "Ra", "Mrok", "Cru",
+        private static String[] beginning = {"Kr", "Ca", "Ra", "Mrok", "Cru",
                 "Ray", "Bre", "Zed", "Drak", "Mor", "Jag", "Mer", "Jar", "Mjol",
                 "Zork", "Mad", "Cry", "Zur", "Creo", "Azak", "Azur", "Rei", "Cro",
                 "Mar", "Luk"};
-        private static String[] Middle = {"air", "ir", "mi", "sor", "mee", "clo",
+        private static String[] middle = {"air", "ir", "mi", "sor", "mee", "clo",
                 "red", "cra", "ark", "arc", "miri", "lori", "cres", "mur", "zer",
                 "marac", "zoir", "slamar", "salmar", "urak"};
-        private static String[] End = {"d", "ed", "ark", "arc", "es", "er", "der",
+        private static String[] end = {"d", "ed", "ark", "arc", "es", "er", "der",
                 "tron", "med", "ure", "zur", "cred", "mur"};
 
         private static Random rand = new Random();
 
         private static String generateName() {
 
-            return Beginning[rand.nextInt(Beginning.length)] +
-                    Middle[rand.nextInt(Middle.length)] +
-                    End[rand.nextInt(End.length)];
+            return beginning[rand.nextInt(beginning.length)] +
+                    middle[rand.nextInt(middle.length)] +
+                    end[rand.nextInt(end.length)];
 
         }
 
@@ -131,14 +127,12 @@ public final class Creator {
     }
 
 
-    private static long nextAmount() {
-        return nextInt(100) * 100 + 100;
-    }
+
 
     public static Tourist nextTourist() {
         Tourist tourist = new Tourist();
         tourist.setUserName(NameGenerator.generateName());
-        tourist.setEmail(tourist.getUserName() + nextInt(100) + "@gmail.com");
+        tourist.setEmail(tourist.getUserName() + nextInt(100) + GMAIL_COM);
         tourist.setLastName(NameGenerator.generateName());
         tourist.setFirstName(NameGenerator.generateName());
         tourist.setRoles(new HashSet<>(Arrays.asList(ROLE_USER)));
@@ -150,7 +144,7 @@ public final class Creator {
     public static Tourist setupAdmin() {
         Tourist tourist = new Tourist();
         tourist.setUserName(Admin.ADMIN);
-        tourist.setEmail(tourist.getUserName() + nextInt(100) + "@gmail.com");
+        tourist.setEmail(tourist.getUserName() + nextInt(100) + GMAIL_COM);
         tourist.setLastName(NameGenerator.generateName());
         tourist.setFirstName(NameGenerator.generateName());
         tourist.setRoles(new HashSet<>(Arrays.asList(ROLE_USER, ROLE_STAFF, ROLE_ADMIN)));
@@ -169,7 +163,7 @@ public final class Creator {
     public static Guide nextGuide() {
         Guide guide = new Guide();
         guide.setUserName(NameGenerator.generateName());
-        guide.setEmail(guide.getUserName() + nextInt(100) + "@gmail.com");
+        guide.setEmail(guide.getUserName() + nextInt(100) + GMAIL_COM);
         guide.setLastName(NameGenerator.generateName());
         guide.setFirstName(NameGenerator.generateName());
         guide.setRoles(new HashSet<>(Arrays.asList(ROLE_STAFF, ROLE_USER)));

@@ -20,6 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private static final String STAFF = "STAFF";
+    private static final String USER = "USER";
+
     @Autowired
     public SecurityConfiguration(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -46,29 +49,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and()
                 .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/api/tours/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/api/tours/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/api/tours/**").hasRole("STAFF")
-                .antMatchers(HttpMethod.DELETE, "/tours/**").hasRole("STAFF")
 //
-//                .antMatchers(HttpMethod.POST, "/groups/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/groups/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/groups/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.DELETE, "/groups/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.DELETE, "/tours/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.PUT, "/tours/**").hasRole(USER)
 //
-                .antMatchers(HttpMethod.GET, "/tourists/me").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/groups/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.PUT, "/groups/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.PATCH, "/groups/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.DELETE, "/groups/**").hasRole(STAFF)
+//
+                .antMatchers(HttpMethod.GET, "/tourists/me").hasRole(USER)
+                .antMatchers(HttpMethod.GET, "/guides/me").hasRole(STAFF)
 
-                .antMatchers(HttpMethod.GET, "/tourists/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.POST, "/tourists/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/tourists/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/tourists/**").hasRole("STAFF")
-                .antMatchers(HttpMethod.DELETE, "/tourists/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.GET, "/tourists/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.PATCH, "/tourists/**").hasRole(USER)
+                .antMatchers(HttpMethod.DELETE, "/tourists/**").hasRole(STAFF)
 //
-                .antMatchers(HttpMethod.GET, "/guides/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.POST, "/guides/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PUT, "/guides/**").hasRole("STAFF")
-//                .antMatchers(HttpMethod.PATCH, "/guides/**").hasRole("STAFF")
-                .antMatchers(HttpMethod.DELETE, "/guides/**").hasRole("STAFF")
+                .antMatchers(HttpMethod.GET, "/guides/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.POST, "/guides/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.PUT, "/guides/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.PATCH, "/guides/**").hasRole(STAFF)
+                .antMatchers(HttpMethod.DELETE, "/guides/**").hasRole(STAFF)
                 .and()
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin();
@@ -79,29 +80,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(11);
     }
 
-//    @Autowired
-//    private BasicAuthenticationEntryPoint entryPoint;
-//
-//    @Autowired
-//    private AccessDeniedHandler handler;
-//
-//
-//    @Autowired
-//    public void configureGlobalSecurity(AuthenticationManagerBuilder auth)
-//            throws Exception {
-//        auth.userDetailsService(userDetailsService);
-//    }
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/rest/tours/").permitAll()
-//                .and()
-//                .httpBasic().authenticationEntryPoint(entryPoint)
-//                .and()
-//                .exceptionHandling().accessDeniedHandler(handler);
-//    }
 
 }

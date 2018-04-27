@@ -4,20 +4,19 @@ import com.tour.model.BaseUser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static com.tour.model.BaseUser.Role.ROLE_ADMIN;
-import static com.tour.model.BaseUser.Role.ROLE_STAFF;
-import static com.tour.model.BaseUser.Role.ROLE_USER;
-import static org.junit.Assert.*;
+import static com.tour.model.BaseUser.Role.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,7 +24,7 @@ import static org.junit.Assert.*;
 public class BaseUserRepositoryTest {
 
 
-   @Autowired
+    @Mock
    private BaseUserRepository baseUserRepository;
 
    @Autowired
@@ -37,6 +36,8 @@ public class BaseUserRepositoryTest {
     public void setUp() throws Exception {
 
 
+        when(baseUserRepository.save(user)).thenReturn(user);
+
         user.setFirstName("ADMIN");
         user.setLastName("ADMIN");
         user.setEmail("adminadmin@mail.com");
@@ -44,7 +45,7 @@ public class BaseUserRepositoryTest {
         user.setUserType(BaseUser.UserType.TOURIST);
         user.setUserName("ADMIN");
         user.setRoles(new HashSet<>(Arrays.asList(ROLE_USER, ROLE_STAFF, ROLE_ADMIN)));
-       user = baseUserRepository.save(user);
+        user = baseUserRepository.save(user);
     }
 
 
@@ -56,6 +57,9 @@ public class BaseUserRepositoryTest {
 
     @Test
     public void findByUserName() throws Exception {
+        when(baseUserRepository.findByUserName(user.getUserName())).thenReturn(user);
+
+
        assertEquals(user , baseUserRepository.findByUserName(user.getUserName()));
     }
 
@@ -63,6 +67,8 @@ public class BaseUserRepositoryTest {
 
     @Test
     public void findByEmail() throws Exception {
+        when(baseUserRepository.findByEmail(user.getEmail())).thenReturn(user);
+
         assertEquals(user,baseUserRepository.findByEmail(user.getEmail()));
 
     }

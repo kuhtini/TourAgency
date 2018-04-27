@@ -1,4 +1,4 @@
-package com.tour.services;
+package com.tour.service;
 
 import com.tour.model.Tour;
 

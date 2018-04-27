@@ -1,12 +1,12 @@
-package com.tour.services.impl;
+package com.tour.service.impl;
 
 import com.tour.model.Group;
 import com.tour.model.Tourist;
 import com.tour.model.enums.UserRole;
 import com.tour.repository.TouristRepository;
-import com.tour.services.GroupService;
-import com.tour.services.TourService;
-import com.tour.services.TouristAccountService;
+import com.tour.service.GroupService;
+import com.tour.service.TourService;
+import com.tour.service.TouristAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -91,7 +91,7 @@ public class TouristAccountServiceImpl implements TouristAccountService {
         Group group = groupService.getGroupById(groupId);
         Tourist tourist = touristRepository.findOne(touristId);
         if (tourist.getGroups().contains(group)) {
-
+            //TODO
             //throw
         } else {
             tourist.joinInToGroup(group);

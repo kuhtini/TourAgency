@@ -4,8 +4,8 @@ import com.tour.controllers.TourResourceController;
 import com.tour.model.BaseUser;
 import com.tour.model.Tour;
 import com.tour.repository.BaseUserRepository;
-import com.tour.services.GuideAccountService;
-import com.tour.services.TouristAccountService;
+import com.tour.service.GuideAccountService;
+import com.tour.service.TouristAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Resource;
@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;

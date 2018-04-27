@@ -1,14 +1,13 @@
-package com.tour.services.impl;
+package com.tour.service.impl;
 
 import com.tour.model.Group;
 import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.Tourist;
 import com.tour.repository.GroupRepository;
-import com.tour.services.GroupService;
+import com.tour.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 

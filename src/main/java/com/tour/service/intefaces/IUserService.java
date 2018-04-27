@@ -1,4 +1,4 @@
-package com.tour.services.intefaces;
+package com.tour.service.intefaces;
 
 
 import com.tour.model.enums.UserRole;

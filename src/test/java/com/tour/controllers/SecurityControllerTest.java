@@ -6,17 +6,16 @@ import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.Tourist;
 import com.tour.repository.BaseUserRepository;
-import com.tour.services.GroupService;
-import com.tour.services.GuideAccountService;
-import com.tour.services.TourService;
-import com.tour.services.TouristAccountService;
-import javafx.application.Application;
+import com.tour.service.GroupService;
+import com.tour.service.GuideAccountService;
+import com.tour.service.TourService;
+import com.tour.service.TouristAccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,12 +43,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@ComponentScan({"com.tour"})
 @AutoConfigureMockMvc
+@Slf4j
 public class SecurityControllerTest {
 
-    private final Logger log = LoggerFactory.getLogger(Application.class);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -98,6 +95,7 @@ public class SecurityControllerTest {
         tour.setStatus(Tour.TourStatus.ACTIVE);
         tourService.addNewTour(tour);
 
+        MockitoAnnotations.initMocks(this);
 
     }
 
@@ -363,7 +361,8 @@ public class SecurityControllerTest {
                 .get("/guides/me")
                 .accept(MediaTypes.HAL_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))));
+                .with(user(userDetailsService.loadUserByUsername(guide.getUserName()))))
+                .andDo(print());
 
         resultActions
                 .andExpect(status().isOk())
@@ -382,5 +381,6 @@ public class SecurityControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.tourists").exists());
     }
+
 
 }

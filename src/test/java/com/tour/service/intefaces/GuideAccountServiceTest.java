@@ -1,32 +1,22 @@
-package com.tour.services.intefaces;
+package com.tour.service.intefaces;
 
-import com.tour.config.H2Config;
-import com.tour.config.SecurityConfiguration;
 import com.tour.model.Guide;
-import com.tour.services.GuideAccountService;
-import org.junit.After;
+import com.tour.service.GuideAccountService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 import static com.tour.utils.Creator.nextGuide;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 @RunWith(SpringRunner.class)
@@ -43,21 +33,7 @@ public class GuideAccountServiceTest {
 
     @Before
     public void initialEntities() {
-//        guide.setFirstName("Park");
-//        guide.setLastName("Ambham");
-//        guide.setUserName("Park991");
-//        guide.setEmail("lordoftherings2000@mail.com");
-//
-//
-//        guide1.setFirstName("Roman");
-//        guide1.setLastName("Wilals");
-//        guide1.setUserName("ARHANGEL991");
-//        guide1.setEmail("lordofthemachinesT800@mail.com");
-//
-//        guide2.setFirstName("Peter");
-//        guide2.setLastName("Jackson");
-//        guide2.setUserName("JacksonOn");
-//        guide2.setEmail("waaagrrOrks@mail.com");
+
 
         guide = nextGuide();
         guide1 = nextGuide();
@@ -69,10 +45,6 @@ public class GuideAccountServiceTest {
         guideAccountService.saveUser(guide2);
     }
 
-//    @After
-//    public void clearDB() {
-//        guideAccountService.deleteAll();
-//    }
 
 
     @Test
@@ -110,7 +82,6 @@ public class GuideAccountServiceTest {
     public void getUserByUserName() throws Exception {
 
 
-        //guideAccountService.saveUser(guide);
 
         assertEquals(guide, guideAccountService.getUserByUserName(guide.getUserName()));
     }
@@ -118,8 +89,6 @@ public class GuideAccountServiceTest {
     @Test
     public void getUserByEmail() throws Exception {
 
-
-        //guideAccountService.saveUser(guide);
 
         assertEquals(guide, guideAccountService.getUserByEmail(guide.getEmail()));
 

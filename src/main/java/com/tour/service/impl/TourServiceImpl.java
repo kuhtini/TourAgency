@@ -1,10 +1,10 @@
-package com.tour.services.impl;
+package com.tour.service.impl;
 
 import com.tour.model.Group;
 import com.tour.model.Tour;
 import com.tour.repository.TourRepository;
-import com.tour.services.GroupService;
-import com.tour.services.TourService;
+import com.tour.service.GroupService;
+import com.tour.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

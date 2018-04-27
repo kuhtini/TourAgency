@@ -1,7 +1,7 @@
 package com.tour.controllers;
 
-import com.tour.services.GuideAccountService;
-import com.tour.services.TouristAccountService;
+import com.tour.service.GuideAccountService;
+import com.tour.service.TouristAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;

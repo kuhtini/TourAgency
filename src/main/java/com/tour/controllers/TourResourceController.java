@@ -1,6 +1,6 @@
 package com.tour.controllers;
 
-import com.sun.istack.internal.NotNull;
+
 import com.tour.exeptions.TravelUserInvalidTourMethodException;
 import com.tour.model.BaseUser;
 import com.tour.model.Group;
@@ -8,11 +8,10 @@ import com.tour.model.Guide;
 import com.tour.model.Tour;
 import com.tour.model.interfaces.ITravelUser;
 import com.tour.repository.BaseUserRepository;
-import com.tour.services.GroupService;
-import com.tour.services.GuideAccountService;
-import com.tour.services.TourService;
-import com.tour.services.TouristAccountService;
-import com.tour.services.intefaces.IUserService;
+import com.tour.service.GuideAccountService;
+import com.tour.service.TourService;
+import com.tour.service.TouristAccountService;
+import com.tour.service.intefaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ControllerUtils;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
@@ -36,19 +35,16 @@ public class TourResourceController {
     private final TourService tourService;
     private final TouristAccountService touristAccountService;
     private final GuideAccountService guideAccountService;
-    private final GroupService groupService;
     private final BaseUserRepository userRepository;
 
     @Autowired
     public TourResourceController(TourService tourService,
                                   TouristAccountService touristAccountService,
                                   GuideAccountService guideAccountService,
-                                  GroupService groupService,
                                   BaseUserRepository userRepository) {
         this.tourService = tourService;
         this.touristAccountService = touristAccountService;
         this.guideAccountService = guideAccountService;
-        this.groupService = groupService;
         this.userRepository = userRepository;
     }
 
@@ -58,10 +54,9 @@ public class TourResourceController {
     @ResponseBody
     public PersistentEntityResource joinInGroup(@PathVariable("tourId") Long tourId, PersistentEntityResourceAssembler assembler) {
 
-        @NotNull
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         BaseUser user = userRepository.findByUserName(auth.getName());
-        PersistentEntityResource fullResource;
 
         if (user.getUserType() == BaseUser.UserType.TOURIST) {
 
@@ -80,7 +75,6 @@ public class TourResourceController {
     @ResponseBody
     public PersistentEntityResource joinInGroupLikeTourist(@PathVariable("tourId") Long tourId, PersistentEntityResourceAssembler assembler) {
 
-        @NotNull
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         BaseUser user = userRepository.findByUserName(auth.getName());
 
@@ -179,7 +173,6 @@ public class TourResourceController {
         if (userService.isInGroup(user.getId(), tourId)) {
             List<Group> groupList = tourService.getTourById(tourId).getGroups();
 
-            //  user.joinInToGroup(groupList.get(groupList.size() - 1));
 
             for (Group group : groupList) {
                 if (user.getGroups().contains(group)) {
@@ -199,7 +192,6 @@ public class TourResourceController {
         if (guideAccountService.isInGroupAsTourist(guide.getId(), tourId)) {
             List<Group> groupList = tourService.getTourById(tourId).getGroups();
 
-            // guide.joinInToGroupAsTourist(groupList.get(groupList.size() - 1));
 
             for (Group group : groupList) {
                 if (guide.getGroupsLikeTourist().contains(group)) {
